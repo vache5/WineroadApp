@@ -1,0 +1,9 @@
+{
+  "name": "Landing Starter",
+  "short_name": "Landing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "icons": []
+}
