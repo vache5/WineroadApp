@@ -1,3 +1,3 @@
 export const useNavItems = () => {
-  return ["Home", "Tours", "Experiences", "Gallery", "Contact"];
+  return ["Home", "Tours",  "Gallery", "Contact"];
 };
