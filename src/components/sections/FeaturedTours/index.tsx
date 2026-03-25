@@ -3,15 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { toursData } from "@/data/tours";
+import { useToursApi } from "@/hooks/useToursApi";
+import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 
 export default function FeaturedTours() {
-  const [selectedTour, setSelectedTour] = useState(toursData[0]?.id || 1);
+  const { tours } = useToursApi(20000);
+  const [selectedTour, setSelectedTour] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
 
-  const selectedTourData = toursData.find((t) => t.id === selectedTour);
-  const featuredTours = toursData.slice(0, 2);
+  const selectedTourData = tours.find((t) => t.id === selectedTour) ?? tours[0];
+  const featuredTours = tours.slice(0, 2);
 
   return (
     <section className="relative py-20 overflow-hidden">
@@ -133,13 +135,13 @@ export default function FeaturedTours() {
                 <div>
                   <label className="block text-sm text-[#D8D3CC] mb-2 font-medium">Tour</label>
                   <select
-                    value={selectedTour}
-                    onChange={(e) => setSelectedTour(Number(e.target.value))}
+                    value={selectedTour || selectedTourData?.id || ""}
+                    onChange={(e) => setSelectedTour(e.target.value)}
                     className="w-full bg-[#1A0F0A] border border-[#CFA56A] rounded-lg px-4 py-3 text-[#F5E3C3] focus:outline-none focus:border-[#D6A85A] focus:ring-2 focus:ring-[#D6A85A]/30 transition-colors"
                   >
-                    {toursData.map((tour) => (
+                    {tours.map((tour) => (
                       <option key={tour.id} value={tour.id} className="bg-[#1A0F0A] text-[#F5E3C3]">
-                        {tour.title}
+                        {tour.name}
                       </option>
                     ))}
                   </select>
@@ -161,7 +163,7 @@ export default function FeaturedTours() {
                   <label className="block text-sm text-[#D8D3CC] mb-2 font-medium">Destination</label>
                   <input
                     type="text"
-                    value={selectedDestination || selectedTourData?.location || ""}
+                    value={selectedDestination || selectedTourData?.duration || ""}
                     onChange={(e) => setSelectedDestination(e.target.value)}
                     placeholder="Select destination"
                     className="w-full bg-[#1A0F0A] border border-[#CFA56A] rounded-lg px-4 py-3 text-[#F5E3C3] focus:outline-none focus:border-[#D6A85A] focus:ring-2 focus:ring-[#D6A85A]/30 placeholder:text-[#D8D3CC]/50 transition-colors"
@@ -172,7 +174,7 @@ export default function FeaturedTours() {
                 <div className="pt-4 border-t border-[#CFA56A]/30 flex justify-between items-center">
                   <span className="text-[#D8D3CC] text-sm font-medium">Price From</span>
                   <span className="text-[#F5E3C3] font-bold text-lg">
-                    {selectedTourData?.price.toLocaleString()}Դ / person
+                    {selectedTourData ? `${selectedTourData.pricePerPerson.toLocaleString()}Դ / person` : "—"}
                   </span>
                 </div>
               </div>
@@ -184,16 +186,26 @@ export default function FeaturedTours() {
                 PHOTO GALLERY
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {featuredTours.map((tour) => (
+                {featuredTours.map((tour) => {
+                  const gallerySrc = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
+                  return (
                   <div key={tour.id} className="space-y-3">
                     <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-md">
-                      <Image
-                        src={tour.image}
-                        alt={tour.title}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover"
-                      />
+                      {gallerySrc ? (
+                        <Image
+                          src={gallerySrc}
+                          alt={tour.name}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <div
+                          className="absolute inset-0 bg-[#2a1810]"
+                          aria-hidden
+                        />
+                      )}
                     </div>
                     <p className="text-[#D8D3CC] text-sm leading-relaxed line-clamp-2" style={{ lineHeight: "1.6" }}>
                       {tour.description}
@@ -217,7 +229,8 @@ export default function FeaturedTours() {
                       VIEW TOUR
                     </Link>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

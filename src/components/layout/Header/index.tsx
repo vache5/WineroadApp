@@ -50,6 +50,9 @@ const Header = () => {
               if (isTours) {
                 href = "/tours";
                 Component = Link;
+              } else if (item === "Gallery") {
+                href = "/gallery";
+                Component = Link;
               } else if (isContact) {
                 href = "/contact";
                 Component = Link;
@@ -124,6 +127,9 @@ const Header = () => {
                 
                 if (isTours) {
                   href = "/tours";
+                  Component = Link;
+                } else if (item === "Gallery") {
+                  href = "/gallery";
                   Component = Link;
                 } else if (isContact) {
                   href = "/contact";

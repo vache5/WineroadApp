@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { toursData } from "@/data/tours";
+import { useToursApi } from "@/hooks/useToursApi";
+import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 
 export default function OurToursSection() {
-  // Get first 3 tours from toursData
-  const featuredTours = toursData.slice(0, 3);
+  const { tours, loading } = useToursApi(20000);
+  const featuredTours = tours.slice(0, 3);
 
   return (
     <section className="bg-[#1A0F0F] py-10 md:py-20">
@@ -23,7 +23,12 @@ export default function OurToursSection() {
 
         {/* Tours Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredTours.map((tour) => (
+          {loading && featuredTours.length === 0 ? (
+            <p className="text-white/70">Loading tours...</p>
+          ) : null}
+          {featuredTours.map((tour) => {
+            const cardSrc = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
+            return (
             <Link
               key={tour.id}
               href={`/tours/${tour.id}`}
@@ -31,25 +36,22 @@ export default function OurToursSection() {
             >
               {/* Image */}
               <div className="relative w-full aspect-video bg-gray-300">
-                <Image
-                  src={tour.image}
-                  alt={tour.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover"
-                />
+                {cardSrc ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={cardSrc} alt={tour.name} className="h-full w-full object-cover" />
+                ) : null}
               </div>
 
               {/* Card Content */}
               <div className="p-6 space-y-4">
                 {/* Location/Category */}
                 <p className="text-sm text-[#2b1d19]/60 font-medium">
-                  {tour.location}
+                  {tour.duration}
                 </p>
 
                 {/* Title */}
                 <h3 className="text-xl font-playfair font-bold text-[#2b1d19] leading-tight line-clamp-2">
-                  {tour.title}
+                  {tour.name}
                 </h3>
 
                 {/* Description */}
@@ -61,7 +63,7 @@ export default function OurToursSection() {
                 <div className="flex items-center justify-between pt-2">
                   <div>
                     <p className="text-2xl font-bold text-[#2b1d19]">
-                      {tour.price.toLocaleString()}Դ
+                      {tour.pricePerPerson.toLocaleString()}Դ
                     </p>
                     <p className="text-xs text-[#2b1d19]/60">per tour</p>
                   </div>
@@ -71,7 +73,8 @@ export default function OurToursSection() {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
         {/* View All Tours Button */}
