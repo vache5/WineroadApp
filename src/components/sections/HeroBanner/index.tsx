@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 export function HeroBanner() {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
@@ -22,12 +25,12 @@ export function HeroBanner() {
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white md:px-8">
           <div className="space-y-6">
             <h1 className="font-playfair text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl" style={{ fontWeight: 900 }}>
-              Classic the Roots of Wine
+              {t("hero.titleLine1")}
               <br />
-              Experience Armenia
+              {t("hero.titleLine2")}
             </h1>
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/90 md:text-lg lg:text-xl">
-              Journeys into Ancient Vineyards, Cultural Treasures & Exquisite Tastes.
+              {t("hero.subtitle")}
             </p>
           </div>
           <div className="mt-12 flex justify-center">

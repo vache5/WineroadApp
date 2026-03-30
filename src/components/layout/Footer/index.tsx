@@ -1,6 +1,20 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
+
+import { defaultLocale, locales } from "@/i18n/config";
 
 export default function Footer() {
+  const { t } = useTranslation("common");
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+  const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
+    ? segments[0]
+    : defaultLocale;
+  const withLocale = (href: string) => `/${currentLocale}${href}`;
+
   return (
     <footer className="bg-[#1A0F0F] text-white">
       {/* Main Footer Content */}
@@ -9,47 +23,31 @@ export default function Footer() {
           {/* Company Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-playfair font-semibold text-[#D1B06B] mb-4">
-              Company
+              {t("footer.company")}
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/about"
+                  href={withLocale("/about")}
                   className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
                 >
-                  About Us
+                  {t("footer.about")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/team"
+                  href={withLocale("/team")}
                   className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
                 >
-                  Our Team
+                  {t("footer.team")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/careers"
+                  href={withLocale("/terms")}
                   className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
                 >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
-                >
-                  Terms & Privacy
+                  {t("footer.terms")}
                 </Link>
               </li>
             </ul>
@@ -58,7 +56,7 @@ export default function Footer() {
           {/* Contact Us Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-playfair font-semibold text-[#D1B06B] mb-4">
-              Contact Us
+              {t("footer.contactUs")}
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
@@ -103,7 +101,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-gray-300 text-sm">
-                  Abovyan Street, Yerevan, Armenia
+                  {t("footer.address")}
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -142,7 +140,7 @@ export default function Footer() {
                   />
                 </svg>
                 <span className="text-gray-300 text-sm">
-                  Mon - Sat: 9:00 AM - 6:00 PM
+                  {t("footer.hours")}
                 </span>
               </li>
             </ul>
@@ -151,7 +149,7 @@ export default function Footer() {
           {/* Follow Us Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-playfair font-semibold text-[#D1B06B] mb-4">
-              Follow Us
+              {t("footer.followUs")}
             </h3>
             <div className="space-y-4">
               {/* Social Media Icons */}
@@ -205,7 +203,7 @@ export default function Footer() {
 
               {/* Message Us Section */}
               <div>
-                <p className="text-sm font-medium text-gray-300 mb-3">Message Us</p>
+                <p className="text-sm font-medium text-gray-300 mb-3">{t("footer.messageUs")}</p>
                 <div className="flex gap-3">
                   <a
                     href="https://wa.me/37499550070"
@@ -258,7 +256,7 @@ export default function Footer() {
           {/* Why Choose Us Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-playfair font-semibold text-[#D1B06B] mb-4">
-              Why Choose Us?
+              {t("footer.whyChoose")}
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
@@ -275,7 +273,7 @@ export default function Footer() {
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="text-gray-300 text-sm">Experienced guides</span>
+                <span className="text-gray-300 text-sm">{t("footer.points.guides")}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg
@@ -291,7 +289,7 @@ export default function Footer() {
                     d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                   />
                 </svg>
-                <span className="text-gray-300 text-sm">Comfortable transport</span>
+                <span className="text-gray-300 text-sm">{t("footer.points.transport")}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg
@@ -307,7 +305,7 @@ export default function Footer() {
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
-                <span className="text-gray-300 text-sm">Fast customer support</span>
+                <span className="text-gray-300 text-sm">{t("footer.points.support")}</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg
@@ -323,7 +321,7 @@ export default function Footer() {
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
-                <span className="text-gray-300 text-sm">Secure online booking</span>
+                <span className="text-gray-300 text-sm">{t("footer.points.booking")}</span>
               </li>
             </ul>
           </div>
@@ -335,10 +333,10 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left" style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}>
-              © {new Date().getFullYear()} WineRoad. All rights reserved.
+              © {new Date().getFullYear()} WineRoad. {t("footer.copyright")}
             </p>
             <p className="text-gray-400 text-sm text-center md:text-right">
-              Powered By VCode
+              {t("footer.poweredBy")}
             </p>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
 export default function TourDetailsPage() {
   const params = useParams();
   const tourId = params?.id as string;
+  const locale = (params?.locale as string) ?? "en";
   const [tour, setTour] = useState<ApiTour | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +65,7 @@ export default function TourDetailsPage() {
       <div className="min-h-screen bg-[#151313] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-xl mb-4">{error ?? "Tour not found"}</p>
-          <Link href="/tours" className="text-[#D1B06B] hover:underline">
+          <Link href={`/${locale}/tours`} className="text-[#D1B06B] hover:underline">
             Back to Tours
           </Link>
         </div>
@@ -119,7 +120,7 @@ export default function TourDetailsPage() {
       <div className="bg-[#1A0F0F] text-white py-8">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <Link
-            href="/tours"
+            href={`/${locale}/tours`}
             className="inline-flex items-center gap-2 text-gray-400 hover:text-[#D1B06B] transition-colors mb-4"
           >
             <svg

@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { useGalleryApi } from "@/hooks/useGalleryApi";
 import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
 
 export default function GalleryPage() {
+  const { t } = useTranslation("common");
+  const params = useParams();
+  const locale = (params?.locale as string) ?? "en";
   const { items, loading, error } = useGalleryApi(12000);
 
   return (
@@ -12,25 +17,25 @@ export default function GalleryPage() {
       <div className="border-b border-[#D4A755]/30 bg-[#1A0F0F]">
         <div className="mx-auto max-w-7xl px-4 py-10 md:px-8">
           <Link
-            href="/"
+            href={`/${locale}`}
             className="mb-4 inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#D1B06B]"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Home
+            {t("gallery.backHome")}
           </Link>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#D1B06B]">Gallery</p>
-          <h1 className="mt-2 font-playfair text-4xl font-bold text-white sm:text-5xl">Moments from the road</h1>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#D1B06B]">{t("gallery.eyebrow")}</p>
+          <h1 className="mt-2 font-playfair text-4xl font-bold text-white sm:text-5xl">{t("gallery.title")}</h1>
           <p className="mt-4 max-w-2xl text-lg text-gray-300">
-            Scenes from our wine country journeys across Armenia—updated from the Wineroad team.
+            {t("gallery.subtitle")}
           </p>
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 py-12 md:px-8">
         {loading && items.length === 0 ? (
-          <p className="text-center text-white/60">Loading gallery…</p>
+          <p className="text-center text-white/60">{t("gallery.loading")}</p>
         ) : null}
         {error ? (
           <p className="mb-8 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
@@ -40,7 +45,7 @@ export default function GalleryPage() {
 
         {!loading && items.length === 0 && !error ? (
           <div className="rounded-2xl border border-white/10 bg-[#1E1411] px-6 py-16 text-center">
-            <p className="text-white/70">No gallery photos yet. Check back soon.</p>
+            <p className="text-white/70">{t("gallery.empty")}</p>
           </div>
         ) : null}
 
@@ -50,7 +55,7 @@ export default function GalleryPage() {
               .filter((item) => nonEmptyImageUrl(item.imageUrl))
               .map((item) => {
                 const src = nonEmptyImageUrl(item.imageUrl)!;
-                const label = item.title.trim() || "Photo";
+                const label = item.title.trim() || t("gallery.photoFallback");
                 return (
                 <article
                   key={item.id}

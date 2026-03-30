@@ -1,3 +1,12 @@
-export const useNavItems = () => {
-  return ["Home", "Tours",  "Gallery", "Contact"];
+export type NavItem = {
+  key: "home" | "about" | "tours" | "gallery" | "contact";
+  href: "/" | "/about" | "/tours" | "/gallery" | "/contact";
 };
+
+export const useNavItems = (): NavItem[] => [
+  { key: "home", href: "/" },
+  { key: "about", href: "/about" },
+  { key: "tours", href: "/tours" },
+  { key: "gallery", href: "/gallery" },
+  { key: "contact", href: "/contact" },
+];

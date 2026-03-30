@@ -1,6 +1,9 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 export default function GuestsLoveWineroad() {
+  const { t } = useTranslation("common");
 
   const features = [
     {
@@ -19,9 +22,8 @@ export default function GuestsLoveWineroad() {
           />
         </svg>
       ),
-      title: "Expert Local Guides",
-      description:
-        "Our knowledgeable guides share deep insights into Armenian wine culture and history, ensuring an authentic and educational experience.",
+      title: t("guests.features.guides.title"),
+      description: t("guests.features.guides.description"),
     },
     {
       icon: (
@@ -39,9 +41,8 @@ export default function GuestsLoveWineroad() {
           />
         </svg>
       ),
-      title: "Authentic Wine Experiences",
-      description:
-        "Discover traditional winemaking methods and taste premium Armenian wines directly from historic vineyards and family-owned cellars.",
+      title: t("guests.features.wine.title"),
+      description: t("guests.features.wine.description"),
     },
     {
       icon: (
@@ -59,9 +60,8 @@ export default function GuestsLoveWineroad() {
           />
         </svg>
       ),
-      title: "Comfortable Transportation",
-      description:
-        "Travel in style with our modern, air-conditioned vehicles and professional drivers ensuring a safe and comfortable journey.",
+      title: t("guests.features.transport.title"),
+      description: t("guests.features.transport.description"),
     },
     {
       icon: (
@@ -79,9 +79,8 @@ export default function GuestsLoveWineroad() {
           />
         </svg>
       ),
-      title: "Safe & Reliable Service",
-      description:
-        "We prioritize your safety and satisfaction with secure online booking, comprehensive insurance, and 24/7 customer support.",
+      title: t("guests.features.service.title"),
+      description: t("guests.features.service.description"),
     },
   ];
 
@@ -91,13 +90,13 @@ export default function GuestsLoveWineroad() {
         {/* Shared Heading Area */}
         <div className="text-center space-y-4 mb-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#D1B06B]">
-            CUSTOMER STORIES
+            {t("guests.eyebrow")}
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-playfair font-bold text-white">
-            Why Guests Love Wineroad
+            {t("guests.title")}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-300">
-            Real stories and reasons from travelers who explored Armenia with Wineroad.
+            {t("guests.subtitle")}
           </p>
           <div className="flex justify-center pt-2">
             <div className="w-24 h-0.5 bg-[#D1B06B]"></div>
