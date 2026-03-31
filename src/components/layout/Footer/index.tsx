@@ -34,14 +34,14 @@ export default function Footer() {
                   {t("footer.about")}
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href={withLocale("/team")}
                   className="text-gray-300 hover:text-[#D1B06B] transition-colors text-sm"
                 >
                   {t("footer.team")}
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href={withLocale("/terms")}
@@ -332,12 +332,9 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left" style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}>
+            <span className="text-gray-400 text-sm text-center md:text-left" style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}>
               © {new Date().getFullYear()} WineRoad. {t("footer.copyright")}
-            </p>
-            <p className="text-gray-400 text-sm text-center md:text-right">
-              {t("footer.poweredBy")}
-            </p>
+            </span>
           </div>
         </div>
       </div>

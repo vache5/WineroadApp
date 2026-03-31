@@ -29,28 +29,26 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#1A0F0F] text-white sticky top-0 z-50 border-b border-[#D4A755]">
-      <div className="mx-auto flex h-[78px] max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
-        {/* Logo + Site Name */}
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 flex items-center justify-center overflow-hidden rounded-full border border-[#D4A755] bg-white">
+    <header className="sticky top-0 z-50 border-b border-[#D4A755]/25 bg-[#1A0F0F]/95 text-white shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md supports-[backdrop-filter]:bg-[#1A0F0F]/88">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[76px] md:px-8">
+        {/* Brand — logo only */}
+        <Link
+          href={withLocale("/")}
+          className="group relative flex shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F]"
+          aria-label={`Wine Road — ${t("navbar.home")}`}
+        >
+          <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#D4A755]/20 via-transparent to-[#D4A755]/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden />
+          <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-[#D4A755]/40 bg-gradient-to-b from-white to-[#F5F0E8] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_2px_12px_rgba(0,0,0,0.2)] transition-[border-color,transform] duration-300 group-hover:border-[#D4A755]/65 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_20px_rgba(212,167,85,0.15)] sm:h-12 sm:w-12">
             <Image
               src="/images/logo.JPG"
-              alt="WineRoad logo"
-              width={60}
-              height={80}
-              className="object-contain"
+              alt=""
+              width={48}
+              height={48}
+              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
               priority
             />
-          </div>
-          {/* Site Name */}
-          <span
-            className="font-playfair text-xl text-white"
-            style={{ letterSpacing: "0.5px", fontWeight: 600 }}
-          >
-            WineRoad
           </span>
-        </div>
+        </Link>
 
         {/* Navigation Links - Desktop */}
         <nav className="hidden flex-1 items-center justify-center md:flex">
@@ -74,13 +72,13 @@ const Header = () => {
         </div>
 
         {/* BOOK NOW Button - Desktop */}
-        <button
+        {/* <button
           onClick={openModal}
           className="hidden border border-[#D4A755] bg-transparent font-playfair text-sm font-semibold text-[#D4A755] transition-all hover:bg-[#D4A755] hover:text-[#1A0F0F] md:block"
           style={{ padding: "8px 20px", borderRadius: "4px" }}
         >
           {t("navbar.bookNow")}
-        </button>
+        </button> */}
 
         {/* Mobile menu button */}
         <button

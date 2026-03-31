@@ -3,30 +3,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useToursApi } from "@/hooks/useToursApi";
+import { useGalleryApi } from "@/hooks/useGalleryApi";
 import { defaultLocale, locales } from "@/i18n/config";
-import { resolveTourImageSrc } from "@/lib/tourImageSrc";
+import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
+
+const PREVIEW_COUNT = 6;
 
 export default function FeaturedTours() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
-  const { tours } = useToursApi(20000);
-  const [selectedTour, setSelectedTour] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedDestination, setSelectedDestination] = useState("");
+  const { items, loading } = useGalleryApi(12000);
   const segments = pathname.split("/").filter(Boolean);
   const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
     ? segments[0]
     : defaultLocale;
 
-  const selectedTourData = tours.find((t) => t.id === selectedTour) ?? tours[0];
-  const featuredTours = tours.slice(0, 2);
+  const previewItems = useMemo(
+    () =>
+      items
+        .filter((item) => nonEmptyImageUrl(item.imageUrl))
+        .slice(0, PREVIEW_COUNT),
+    [items],
+  );
 
   return (
     <section className="relative py-20 overflow-hidden">
-      {/* Background Image with Parallax Effect */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
@@ -34,14 +37,12 @@ export default function FeaturedTours() {
           backgroundAttachment: "fixed",
         }}
       />
-      <div 
+      <div
         className="absolute inset-0"
         style={{ backgroundColor: "rgba(0,0,0,0.65)" }}
       />
-      
-      {/* Content */}
+
       <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-8">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-playfair font-bold text-[#F5E3C3] mb-4 tracking-wider uppercase">
             {t("homepage.featuredHeading")}
@@ -49,11 +50,8 @@ export default function FeaturedTours() {
           <div className="w-24 h-0.5 bg-[#CFA56A] mx-auto" />
         </div>
 
-        {/* Two-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* LEFT COLUMN */}
           <div className="flex flex-col space-y-12">
-            {/* Overview Section */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <svg
@@ -77,7 +75,6 @@ export default function FeaturedTours() {
               </p>
             </div>
 
-            {/* What's Included Section */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <svg
@@ -102,7 +99,6 @@ export default function FeaturedTours() {
               </p>
             </div>
 
-            {/* Guest Reviews Section */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <svg
@@ -122,117 +118,55 @@ export default function FeaturedTours() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="flex flex-col space-y-8">
-            {/* Booking Box Card */}
-            <div className="bg-[#1A0F0A] rounded-xl p-6 shadow-lg">
-              <h3 className="text-2xl sm:text-3xl font-playfair font-bold text-[#F5E3C3] mb-6 text-center tracking-wide">
-                {t("homepage.bookingTitle")}
+          <div className="flex flex-col">
+            <div className="bg-[#1A0F0A] rounded-xl p-6 shadow-lg border border-[#CFA56A]/20 flex flex-col h-full">
+              <h3 className="text-2xl sm:text-3xl font-playfair font-bold text-[#F5E3C3] mb-2 text-center tracking-wide">
+                {t("homepage.galleryPreviewTitle")}
               </h3>
-              <div className="space-y-5">
-                {/* Tour Selection */}
-                <div>
-                  <label className="block text-sm text-[#D8D3CC] mb-2 font-medium">{t("homepage.tourLabel")}</label>
-                  <select
-                    value={selectedTour || selectedTourData?.id || ""}
-                    onChange={(e) => setSelectedTour(e.target.value)}
-                    className="w-full bg-[#1A0F0A] border border-[#CFA56A] rounded-lg px-4 py-3 text-[#F5E3C3] focus:outline-none focus:border-[#D6A85A] focus:ring-2 focus:ring-[#D6A85A]/30 transition-colors"
-                  >
-                    {tours.map((tour) => (
-                      <option key={tour.id} value={tour.id} className="bg-[#1A0F0A] text-[#F5E3C3]">
-                        {tour.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <p className="text-center text-sm text-[#D8D3CC]/80 mb-6">
+                {t("homepage.galleryPreviewSubtitle")}
+              </p>
 
-                {/* Date Selection */}
-                <div>
-                  <label className="block text-sm text-[#D8D3CC] mb-2 font-medium">{t("homepage.dateLabel")}</label>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full bg-[#1A0F0A] border border-[#CFA56A] rounded-lg px-4 py-3 text-[#F5E3C3] focus:outline-none focus:border-[#D6A85A] focus:ring-2 focus:ring-[#D6A85A]/30 transition-colors"
-                  />
-                </div>
+              {loading && previewItems.length === 0 ? (
+                <p className="text-[#D8D3CC]/70 text-sm text-center py-8">{t("gallery.loading")}</p>
+              ) : null}
 
-                {/* Destination */}
-                <div>
-                  <label className="block text-sm text-[#D8D3CC] mb-2 font-medium">{t("homepage.destinationLabel")}</label>
-                  <input
-                    type="text"
-                    value={selectedDestination || selectedTourData?.duration || ""}
-                    onChange={(e) => setSelectedDestination(e.target.value)}
-                    placeholder={t("homepage.destinationPlaceholder")}
-                    className="w-full bg-[#1A0F0A] border border-[#CFA56A] rounded-lg px-4 py-3 text-[#F5E3C3] focus:outline-none focus:border-[#D6A85A] focus:ring-2 focus:ring-[#D6A85A]/30 placeholder:text-[#D8D3CC]/50 transition-colors"
-                  />
-                </div>
+              {!loading && previewItems.length === 0 ? (
+                <p className="text-[#D8D3CC]/80 text-sm text-center py-6 px-4">
+                  {t("homepage.galleryPreviewEmpty")}
+                </p>
+              ) : null}
 
-                {/* Price Display */}
-                <div className="pt-4 border-t border-[#CFA56A]/30 flex justify-between items-center">
-                  <span className="text-[#D8D3CC] text-sm font-medium">{t("homepage.priceFrom")}</span>
-                  <span className="text-[#F5E3C3] font-bold text-lg">
-                    {selectedTourData
-                      ? `${selectedTourData.pricePerPerson.toLocaleString()}Դ ${t("homepage.perPerson")}`
-                      : "—"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Photo Gallery Card */}
-            <div className="bg-[#1A0F0A] rounded-xl p-6 shadow-lg">
-              <h3 className="text-2xl sm:text-3xl font-playfair font-bold text-[#F5E3C3] mb-6 text-center tracking-wide">
-                {t("homepage.photoGalleryTitle")}
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {featuredTours.map((tour) => {
-                  const gallerySrc = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
-                  return (
-                  <div key={tour.id} className="space-y-3">
-                    <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-md">
-                      {gallerySrc ? (
+              {previewItems.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 flex-1">
+                  {previewItems.map((item) => {
+                    const src = nonEmptyImageUrl(item.imageUrl)!;
+                    const label = item.title.trim() || t("gallery.photoFallback");
+                    return (
+                      <div
+                        key={item.id}
+                        className="relative aspect-square overflow-hidden rounded-lg border border-[#CFA56A]/25 bg-[#140c0a]"
+                      >
                         <Image
-                          src={gallerySrc}
-                          alt={tour.name}
+                          src={src}
+                          alt={label}
                           fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
+                          sizes="(max-width: 640px) 50vw, 33vw"
                           className="object-cover"
                           unoptimized
                         />
-                      ) : (
-                        <div
-                          className="absolute inset-0 bg-[#2a1810]"
-                          aria-hidden
-                        />
-                      )}
-                    </div>
-                    <p className="text-[#D8D3CC] text-sm leading-relaxed line-clamp-2" style={{ lineHeight: "1.6" }}>
-                      {tour.description}
-                    </p>
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className="w-4 h-4 text-[#D6A85A]"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <Link
-                      href={`/${currentLocale}/tours/${tour.id}`}
-                      className="block w-full bg-[#D6A85A] hover:bg-[#CFA56A] text-[#1A0F0A] font-bold py-2.5 px-4 rounded-lg text-center text-sm transition-colors shadow-md"
-                    >
-                      {t("homepage.viewTour")}
-                    </Link>
-                  </div>
-                  );
-                })}
-              </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+
+              <Link
+                href={`/${currentLocale}/gallery`}
+                className="mt-6 block w-full rounded-lg border border-[#D6A85A] bg-[#D6A85A] py-3.5 text-center text-sm font-bold text-[#1A0F0A] shadow-md transition-colors hover:bg-[#CFA56A]"
+              >
+                {t("homepage.viewMoreGallery")}
+              </Link>
             </div>
           </div>
         </div>

@@ -28,7 +28,11 @@
     "priceFrom": "Price From",
     "perPerson": "/ person",
     "photoGalleryTitle": "PHOTO GALLERY",
-    "viewTour": "VIEW TOUR"
+    "viewTour": "VIEW TOUR",
+    "galleryPreviewTitle": "From our gallery",
+    "galleryPreviewSubtitle": "Moments from wine country journeys across Armenia",
+    "galleryPreviewEmpty": "Gallery photos are coming soon. Visit the gallery page for updates.",
+    "viewMoreGallery": "View more"
   },
   "ourTours": {
     "title": "Armenian Wine Tours",
@@ -69,6 +73,63 @@
     "loading": "Loading gallery...",
     "empty": "No gallery photos yet. Check back soon.",
     "photoFallback": "Photo"
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Wine Road",
+      "tagline": "Where Armenia opens itself through wine",
+      "titleLine1": "About",
+      "titleLine2": "Us",
+      "intro": "At Wine Road, we craft refined wine journeys through the soul of Armenia — a land where winemaking began thousands of years ago, and where every road has a story.",
+      "ctaTours": "View tours",
+      "ctaContact": "Contact us",
+      "imageAlt": "Armenian wine country landscape",
+      "imageQuote": "Not just seeing Armenia — feeling it.",
+      "imageQuoteBrand": "Wine Road"
+    },
+    "quoteBand": "We believe wine is more than a drink. It is a bond — with the soil, with people, and with time.",
+    "story": {
+      "title": "Our story",
+      "subtitle": "Every stop and connection — thoughtfully chosen for your experience",
+      "block1": "Our experiences go beyond ordinary tours. They are carefully designed journeys where wine merges with culture, history, and atmosphere — creating something truly personal and memorable.",
+      "block2": "From boutique wineries and hidden vineyards to ancient monasteries, stunning landscapes, and local encounters — each route reveals Armenia at its most authentic and subtle.",
+      "block3Before": "And through Wine Road we invite you not merely to see Armenia, but to ",
+      "block3Emphasis": "feel it",
+      "block3After": ".",
+      "routesLabel": "routes",
+      "routesCaption": "Each with its own story"
+    },
+    "mission": {
+      "title": "Our mission",
+      "p1": "To redefine wine tourism in Armenia by creating elevated, thoughtful journeys that unite heritage, culture, and contemporary experience.",
+      "p2": "Our goal is to present Armenia as a world-class wine destination — emphasizing authenticity, attention to detail, and emotion."
+    },
+    "values": {
+      "title": "Our values",
+      "subtitle": "Four pillars on which we build every journey",
+      "items": {
+        "authenticity": {
+          "title": "Authenticity",
+          "body": "We work with real places, people, and stories — preserving Armenia's true spirit."
+        },
+        "curation": {
+          "title": "Thoughtful curation",
+          "body": "Every route and stop is chosen with care to create a complete, harmonious experience."
+        },
+        "atmosphere": {
+          "title": "Atmosphere",
+          "body": "We create not only routes, but moods — from mornings in the vineyard to sunset on the hill."
+        },
+        "quality": {
+          "title": "Quality over quantity",
+          "body": "Without rushing — only deep, memorable experiences."
+        }
+      }
+    },
+    "connection": {
+      "title": "Connection",
+      "body": "Between wine and culture. Between person and place. Between past and present."
+    }
   },
   "contact": {
     "title": "Contact Us",

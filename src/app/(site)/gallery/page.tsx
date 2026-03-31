@@ -6,6 +6,22 @@ import { useTranslation } from "react-i18next";
 import { useGalleryApi } from "@/hooks/useGalleryApi";
 import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
 
+function looksLikePhotoFileName(input: string) {
+  const v = input.trim();
+  if (!v) return false;
+
+  // Common case: titles coming from filenames with extensions.
+  if (/\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i.test(v)) return true;
+
+  // Common case: "IMG_001", "photo-12", etc (often filenames without extension).
+  const noSpaces = !/\s/.test(v);
+  const hasDigits = /\d/.test(v);
+  const hasSeparators = /[_-]/.test(v);
+  const endsWithNumber = /\d$/.test(v);
+
+  return noSpaces && hasDigits && hasSeparators && endsWithNumber;
+}
+
 export default function GalleryPage() {
   const { t } = useTranslation("common");
   const params = useParams();
@@ -55,7 +71,10 @@ export default function GalleryPage() {
               .filter((item) => nonEmptyImageUrl(item.imageUrl))
               .map((item) => {
                 const src = nonEmptyImageUrl(item.imageUrl)!;
-                const label = item.title.trim() || t("gallery.photoFallback");
+                const title = item.title.trim();
+                const isFileName = looksLikePhotoFileName(title);
+                const label = !isFileName && title ? title : t("gallery.photoFallback");
+                const showTitle = !isFileName && Boolean(title);
                 return (
                 <article
                   key={item.id}
@@ -74,11 +93,6 @@ export default function GalleryPage() {
                       aria-hidden
                     />
                     <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-5">
-                      {item.title.trim() ? (
-                        <h2 className="font-playfair text-lg font-semibold text-white drop-shadow md:text-xl">
-                          {item.title.trim()}
-                        </h2>
-                      ) : null}
                       {item.description.trim() ? (
                         <p className="mt-1 line-clamp-3 text-sm text-white/90 drop-shadow">
                           {item.description.trim()}

@@ -3,10 +3,18 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useToursApi } from "@/hooks/useToursApi";
+import { defaultLocale, locales } from "@/i18n/config";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 
 export default function ToursPage() {
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+  const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
+    ? segments[0]
+    : defaultLocale;
+
   const { tours, loading, error } = useToursApi(15000);
   const prices = tours.map((t) => t.pricePerPerson);
   const minBound = prices.length ? Math.floor(Math.min(...prices)) : 0;
@@ -212,16 +220,16 @@ export default function ToursPage() {
                 Showing {filteredTours.length} tour{filteredTours.length !== 1 ? "s" : ""}
               </p>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2">
               {filteredTours.map((tour) => {
                 const cardImage = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
                 return (
                 <Link
                   key={tour.id}
-                  href={`/tours/${tour.id}`}
-                  className="bg-[#2B1D1A] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] block"
+                  href={`/${currentLocale}/tours/${tour.id}`}
+                  className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg bg-[#2B1D1A] shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
                 >
-                  <div className="relative w-full aspect-[4/3]">
+                  <div className="relative h-48 w-full shrink-0 overflow-hidden bg-[#1f140f]">
                     {cardImage ? (
                       <Image
                         src={cardImage}
@@ -231,27 +239,25 @@ export default function ToursPage() {
                         className="object-cover"
                         unoptimized
                       />
-                    ) : (
-                      <div className="absolute inset-0 bg-[#1f140f]" aria-hidden />
-                    )}
+                    ) : null}
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-playfair text-white mb-2 line-clamp-2">
+                  <div className="flex flex-grow flex-col p-6">
+                    <h3 className="text-xl font-playfair text-white line-clamp-2">
                       {tour.name}
                     </h3>
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    <p className="mt-2 flex-grow text-sm leading-relaxed text-gray-400 line-clamp-2">
                       {tour.description}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[#D1B06B] font-semibold text-lg">
+                    <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+                      <div className="min-w-0">
+                        <p className="text-lg font-semibold text-[#D1B06B]">
                           {tour.pricePerPerson.toLocaleString()}Դ
                         </p>
-                        <p className="text-gray-500 text-xs">per tour</p>
+                        <p className="text-xs text-gray-500">per tour</p>
                       </div>
-                      <div className="rounded-lg bg-[#D1B06B] px-6 py-2 text-sm font-semibold text-[#1A0F0F]">
+                      <span className="shrink-0 rounded-lg bg-[#D1B06B] px-5 py-2 text-sm font-semibold text-[#1A0F0F]">
                         Details
-                      </div>
+                      </span>
                     </div>
                   </div>
                 </Link>

@@ -3,7 +3,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
+
 import { defaultLocale, locales } from "@/i18n/config";
+
+const VALUE_KEYS = ["authenticity", "curation", "atmosphere", "quality"] as const;
+
+const VALUE_ICONS = [
+  <path
+    key="a"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    d="M12 3c2.5 4.5 8 7 8 12a8 8 0 11-16 0c0-5 5.5-7.5 8-12z"
+  />,
+  <path
+    key="b"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"
+  />,
+  <path
+    key="c"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+  />,
+  <path
+    key="d"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={1.5}
+    d="M5 3v4M3 5h4M6 15v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+  />,
+];
 
 function WineLeafDecoration({ className }: { className?: string }) {
   return (
@@ -30,6 +65,7 @@ function WineLeafDecoration({ className }: { className?: string }) {
 }
 
 export default function AboutPage() {
+  const { t } = useTranslation("common");
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
@@ -56,34 +92,32 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative border-b border-[#D4A755]/15">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(212,167,85,0.15),transparent_55%)]" />
-        <WineLeafDecoration className="pointer-events-none absolute -right-4 top-16 h-64 w-40 text-[#D4A755] opacity-[0.12] md:right-8 md:top-24" />
-        <WineLeafDecoration className="pointer-events-none absolute -left-8 bottom-8 h-48 w-32 -scale-x-100 text-[#D4A755] opacity-[0.1] md:left-4" />
+        <WineLeafDecoration className="pointer-events-none absolute -right-6 top-12 h-[17rem] w-[10.5rem] text-[#D4A755] opacity-[0.16] md:right-4 md:top-16 md:h-[22rem] md:w-[13.5rem]" />
+        <WineLeafDecoration className="pointer-events-none absolute -left-10 bottom-4 h-[13rem] w-[8.5rem] -scale-x-100 text-[#D4A755] opacity-[0.14] md:bottom-6 md:left-0 md:h-[17rem] md:w-[11rem]" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:px-8 md:py-20 lg:py-24">
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[1fr_1.05fr] md:items-center md:gap-14 md:px-8 md:py-20 lg:py-24">
           <div className="relative z-10">
             <div className="mb-6 inline-flex items-center gap-3">
               <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#D4A755]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#D4A755]">
-                Wine Road
+                {t("about.hero.eyebrow")}
               </span>
               <span className="h-px flex-1 max-w-[4rem] bg-gradient-to-l from-transparent to-[#D4A755]/60" />
             </div>
 
             <p className="mb-3 font-playfair text-lg italic text-[#E5D4BC]/95 md:text-xl">
-              Այնտեղ, որտեղ Հայաստանը բացվում է գինու միջոցով
+              {t("about.hero.tagline")}
             </p>
 
             <h1 className="font-playfair text-[2.5rem] font-bold leading-[1.08] tracking-tight text-white md:text-5xl lg:text-6xl">
-              Մեր
+              {t("about.hero.titleLine1")}
               <span className="block bg-gradient-to-r from-[#F8E5C4] via-[#D4A755] to-[#C9A227] bg-clip-text text-transparent">
-                մասին
+                {t("about.hero.titleLine2")}
               </span>
             </h1>
 
             <p className="mt-8 max-w-xl text-[15px] leading-[1.75] text-[#D4C4B0]/95 md:text-lg">
-              Wine Road-ում մենք ստեղծում ենք նրբաճաշակ գինեգործական ճանապարհորդություններ Հայաստանի
-              հոգու միջով — երկիր, որտեղ գինեգործությունը սկիզբ է առել հազարավոր տարիներ առաջ, և որտեղ
-              յուրաքանչյուր ճանապարհ պատմություն ունի։
+              {t("about.hero.intro")}
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -91,42 +125,43 @@ export default function AboutPage() {
                 href={`${localePrefix}/tours`}
                 className="rounded-full border border-[#D4A755]/50 bg-[#D4A755]/10 px-6 py-3 text-sm font-semibold text-[#F8E5C4] backdrop-blur-sm transition hover:border-[#D4A755] hover:bg-[#D4A755]/20"
               >
-                Դիտել տուրերը
+                {t("about.hero.ctaTours")}
               </Link>
               <Link
                 href={`${localePrefix}/contact`}
                 className="text-sm font-medium text-[#D4C4B0] underline-offset-4 transition hover:text-[#D4A755] hover:underline"
               >
-                Կապ մեզ հետ
+                {t("about.hero.ctaContact")}
               </Link>
             </div>
           </div>
 
-          <div className="relative z-10">
-            <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-[2rem] border border-[#D4A755]/25 shadow-[0_24px_80px_rgba(0,0,0,0.45),inset_0_0_0_1px_rgba(255,255,255,0.06)] md:aspect-[3/4]">
+          <div className="relative z-10 md:justify-self-end md:w-full md:max-w-xl lg:max-w-2xl">
+            <div className="relative aspect-[4/5] min-h-[22rem] w-full max-h-[560px] overflow-hidden rounded-[2rem] border border-[#D4A755]/25 shadow-[0_24px_80px_rgba(0,0,0,0.45),inset_0_0_0_1px_rgba(255,255,255,0.06)] md:aspect-[3/4] md:min-h-[28rem] md:max-h-[680px] lg:max-h-[720px]">
               <Image
                 src="/images/main2.jpeg"
-                alt=""
+                alt={t("about.hero.imageAlt")}
                 fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 45vw"
+                className="scale-[1.03] object-cover object-[center_38%]"
+                sizes="(max-width: 768px) 100vw, 42vw"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0A09] via-transparent to-[#1A0F0F]/40" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D4A755]/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0A09] via-[#0D0A09]/20 to-[#1A0F0F]/55" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D4A755]/15 via-transparent to-[#0D0A09]/50" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-black/20" />
 
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/10 bg-black/35 p-4 backdrop-blur-md md:bottom-8 md:left-8 md:right-8 md:p-5">
                 <p className="font-playfair text-lg italic leading-snug text-white md:text-xl">
-                  «Ոչ թե պարզապես տեսնել Հայաստանը — զգալ այն։»
+                  {t("about.hero.imageQuote")}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#D4A755]">
                   <span className="h-px w-8 bg-[#D4A755]" />
-                  Wine Road
+                  {t("about.hero.imageQuoteBrand")}
                 </div>
               </div>
             </div>
             <div
-              className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 rounded-full border border-[#D4A755]/15 md:h-28 md:w-28"
+              className="pointer-events-none absolute -right-3 -top-3 h-28 w-28 rounded-full border border-[#D4A755]/20 md:h-32 md:w-32"
               aria-hidden
             />
           </div>
@@ -138,12 +173,7 @@ export default function AboutPage() {
         <div className="absolute left-1/2 top-0 h-px w-24 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#D4A755] to-transparent" />
         <div className="mx-auto max-w-4xl px-4 text-center md:px-8">
           <p className="font-playfair text-2xl font-medium leading-relaxed text-[#F5EBDD] md:text-3xl lg:text-[2rem]">
-            Մենք հավատում ենք, որ գինին պարզապես խմիչք չէ։ Այն{' '}
-            <span className="relative inline-block">
-              <span className="relative z-10 text-[#E8C878]">կապ է</span>
-              <span className="absolute -bottom-1 left-0 right-0 h-3 bg-[#D4A755]/20" />
-            </span>{' '}
-            — հողի, մարդկանց և ժամանակի հետ։
+            {t("about.quoteBand")}
           </p>
         </div>
       </section>
@@ -152,10 +182,10 @@ export default function AboutPage() {
       <section className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
         <div className="mb-12 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="font-playfair text-3xl font-bold text-white md:text-4xl">Մեր պատմությունը</h2>
-            <p className="mt-2 max-w-md text-sm text-[#A89888]">
-              Յուրաքանչյուր կանգառ և կապ — խնամքով ընտրված ձեր փորձի համար
-            </p>
+            <h2 className="font-playfair text-3xl font-bold text-white md:text-4xl">
+              {t("about.story.title")}
+            </h2>
+            <p className="mt-2 max-w-md text-sm text-[#A89888]">{t("about.story.subtitle")}</p>
           </div>
           <div className="hidden h-px flex-1 max-w-md bg-gradient-to-r from-[#D4A755]/40 to-transparent md:block md:translate-y-[-0.5rem]" />
         </div>
@@ -165,9 +195,7 @@ export default function AboutPage() {
             <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#D4A755]/5 blur-2xl transition group-hover:bg-[#D4A755]/10" />
             <span className="text-5xl font-playfair leading-none text-[#D4A755]/25">01</span>
             <p className="relative mt-4 text-[15px] leading-[1.8] text-[#E0D0C0] md:text-[17px]">
-              Մեր փորձառությունները դուրս են սովորական տուրերի սահմաններից։ Դրանք խնամքով մշակված
-              ճանապարհորդություններ են, որտեղ գինին միաձուլվում է մշակույթի, պատմության և մթնոլորտի հետ՝
-              ստեղծելով իսկապես անձնական և հիշվող փորձառություն։
+              {t("about.story.block1")}
             </p>
           </article>
 
@@ -175,9 +203,7 @@ export default function AboutPage() {
             <div className="absolute inset-0 opacity-[0.07] [background-image:radial-gradient(circle_at_1px_1px,#D4A755_1px,transparent_0)] [background-size:20px_20px]" />
             <span className="relative text-5xl font-playfair leading-none text-[#D4A755]/35">02</span>
             <p className="relative mt-4 text-[15px] leading-[1.8] text-[#E8DCCD] md:text-[17px]">
-              Բուտիկ գինեգործարաններից և թաքնված խաղողի այգիներից մինչև հին վանքեր, գեղատեսիլ բնապատկերներ և
-              տեղական հանդիպումներ — յուրաքանչյուր երթուղի բացահայտում է Հայաստանը իր ամենաիսկական և նուրբ
-              տեսքով։
+              {t("about.story.block2")}
             </p>
           </article>
 
@@ -185,16 +211,19 @@ export default function AboutPage() {
             <div className="flex-1">
               <span className="text-5xl font-playfair leading-none text-[#D4A755]/25">03</span>
               <p className="mt-4 text-[15px] leading-[1.85] text-[#D4C4B0] md:text-[17px]">
-                Եվ Wine Road-ի միջոցով մենք հրավիրում ենք ձեզ ոչ թե պարզապես տեսնել Հայաստանը, այլ{' '}
-                <strong className="font-semibold text-[#F5EBDD]">զգալ այն</strong>։
+                {t("about.story.block3Before")}
+                <strong className="font-semibold text-[#F5EBDD]">{t("about.story.block3Emphasis")}</strong>
+                {t("about.story.block3After")}
               </p>
             </div>
             <div className="mt-6 flex shrink-0 flex-col gap-2 border-t border-[#D4A755]/20 pt-6 md:mt-0 md:w-64 md:border-l md:border-t-0 md:pl-10 md:pt-0">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-playfair text-[#D4A755]">∞</span>
-                <span className="text-sm uppercase tracking-wider text-[#9A8878]">ճանապարհներ</span>
+                <span className="text-sm uppercase tracking-wider text-[#9A8878]">
+                  {t("about.story.routesLabel")}
+                </span>
               </div>
-              <p className="text-xs leading-relaxed text-[#7A6B5E]">Յուրաքանչյուրը՝ իր պատմությամբ</p>
+              <p className="text-xs leading-relaxed text-[#7A6B5E]">{t("about.story.routesCaption")}</p>
             </div>
           </article>
         </div>
@@ -209,102 +238,55 @@ export default function AboutPage() {
               <span className="text-2xl" aria-hidden>
                 🥂
               </span>
-              <h2 className="font-playfair text-2xl font-bold text-[#F8EEDB] md:text-3xl">Մեր առաքելությունը</h2>
+              <h2 className="font-playfair text-2xl font-bold text-[#F8EEDB] md:text-3xl">
+                {t("about.mission.title")}
+              </h2>
             </div>
-            <p className="text-[15px] leading-[1.85] text-[#D4C4B0] md:text-lg">
-              Վերաիմաստավորել գինու տուրիզմը Հայաստանում՝ ստեղծելով բարձրակարգ և մտածված ճանապարհորդություններ,
-              որոնք միավորում են ժառանգությունը, մշակույթը և ժամանակակից փորձառությունները։
-            </p>
-            <p className="mt-5 text-[15px] leading-[1.85] text-[#C4B4A4] md:text-lg">
-              Մեր նպատակն է ներկայացնել Հայաստանը որպես համաշխարհային գինու ուղղություն՝ շեշտելով իսկությունը,
-              մանրուքների հանդեպ ուշադրությունը և զգացողությունները։
-            </p>
+            <p className="text-[15px] leading-[1.85] text-[#D4C4B0] md:text-lg">{t("about.mission.p1")}</p>
+            <p className="mt-5 text-[15px] leading-[1.85] text-[#C4B4A4] md:text-lg">{t("about.mission.p2")}</p>
           </div>
         </div>
       </section>
 
       {/* Values */}
       <section className="relative mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
-        <h2 className="mb-3 text-center font-playfair text-3xl font-bold text-white md:text-4xl">Մեր արժեքները</h2>
+        <h2 className="mb-3 text-center font-playfair text-3xl font-bold text-white md:text-4xl">
+          {t("about.values.title")}
+        </h2>
         <p className="mx-auto mb-12 max-w-2xl text-center text-sm text-[#9A8878]">
-          Չորս սյուն, որոնց վրա մենք կառուցում ենք յուրաքանչյուր ճանապարհորդություն
+          {t("about.values.subtitle")}
         </p>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {(
-            [
-              {
-                title: "Իսկություն",
-                body: "Մենք աշխատում ենք իրական վայրերի, մարդկանց և պատմությունների հետ՝ պահպանելով Հայաստանի իրական ոգին։",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M12 3c2.5 4.5 8 7 8 12a8 8 0 11-16 0c0-5 5.5-7.5 8-12z"
-                  />
-                ),
-              },
-              {
-                title: "Խնամքով ընտրվածություն",
-                body: "Յուրաքանչյուր երթուղի և կանգառ ընտրված են մտածված՝ ամբողջական և ներդաշնակ փորձառություն ստեղծելու համար։",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                ),
-              },
-              {
-                title: "Մթնոլորտ",
-                body: "Մենք ստեղծում ենք ոչ միայն երթուղիներ, այլ զգացողություններ — առավոտներ խաղողի այգում մինչև մայրամուտ գլխին։",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                ),
-              },
-              {
-                title: "Որակը՝ քանակից վեր",
-                body: "Առանց շտապելու — միայն խոր և հիշվող փորձառություններ։",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M5 3v4M3 5h4M6 15v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                  />
-                ),
-              },
-            ] as const
-          ).map((item) => (
-            <article
-              key={item.title}
-              className="group relative overflow-hidden rounded-2xl border border-[#D4A755]/12 bg-gradient-to-b from-[#1A1411] to-[#120e0c] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#D4A755]/35 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]"
-            >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D4A755]/25 bg-[#D4A755]/8 text-[#D4A755] transition group-hover:bg-[#D4A755]/15">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {item.icon}
-                </svg>
-              </div>
-              <h3 className="font-playfair text-lg font-semibold text-[#F4E7D2]">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#B8A898]/95">{item.body}</p>
-            </article>
-          ))}
+          {VALUE_KEYS.map((key, index) => (
+              <article
+                key={key}
+                className="group relative overflow-hidden rounded-2xl border border-[#D4A755]/12 bg-gradient-to-b from-[#1A1411] to-[#120e0c] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#D4A755]/35 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]"
+              >
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D4A755]/25 bg-[#D4A755]/8 text-[#D4A755] transition group-hover:bg-[#D4A755]/15">
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {VALUE_ICONS[index]}
+                  </svg>
+                </div>
+                <h3 className="font-playfair text-lg font-semibold text-[#F4E7D2]">
+                  {t(`about.values.items.${key}.title`)}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#B8A898]/95">
+                  {t(`about.values.items.${key}.body`)}
+                </p>
+              </article>
+            ))}
         </div>
 
         <div className="mt-10 rounded-3xl border border-[#D4A755]/25 bg-[linear-gradient(135deg,rgba(212,167,85,0.08),transparent_50%)] p-8 text-center md:p-10">
           <span className="text-2xl" aria-hidden>
             💎
           </span>
-          <h3 className="mt-3 font-playfair text-xl font-semibold text-[#F8EEDB] md:text-2xl">Կապ</h3>
+          <h3 className="mt-3 font-playfair text-xl font-semibold text-[#F8EEDB] md:text-2xl">
+            {t("about.connection.title")}
+          </h3>
           <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-[1.9] text-[#D4C4B0]">
-            Գինու և մշակույթի միջև։ Մարդու և վայրի միջև։ Անցյալի և ներկայի միջև։
+            {t("about.connection.body")}
           </p>
         </div>
       </section>

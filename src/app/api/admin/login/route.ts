@@ -1,12 +1,6 @@
 import { NextResponse } from "next/server";
 
-function backendOrigin(): string {
-  const raw =
-    process.env.BACKEND_URL?.trim() ||
-    process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    "http://127.0.0.1:4000";
-  return raw.replace(/\/$/, "");
-}
+import { getServerBackendOrigin } from "@/lib/api/config";
 
 /**
  * Proxies POST /api/admin/login → Express POST /admin/login.
@@ -14,7 +8,8 @@ function backendOrigin(): string {
  */
 export async function POST(request: Request) {
   const body = await request.text();
-  const target = `${backendOrigin()}/admin/login`;
+  const origin = getServerBackendOrigin();
+  const target = `${origin}/admin/login`;
 
   let res: Response;
   try {
@@ -27,7 +22,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       {
-        error: `Cannot reach Express API at ${backendOrigin()}. Start Wineroad-back (npm run dev) and set BACKEND_URL or NEXT_PUBLIC_API_URL in .env.local.`,
+        error: `Cannot reach Express API at ${origin}. Set NEXT_PUBLIC_API_URL (and optionally BACKEND_URL) in .env.local or your deployment env, ensure the backend is running, then restart Next.js.`,
       },
       { status: 502 }
     );

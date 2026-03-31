@@ -31,7 +31,7 @@ export default function OurToursSection() {
         </div>
 
         {/* Tours Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
           {loading && featuredTours.length === 0 ? (
             <p className="text-white/70">{t("ourTours.loading")}</p>
           ) : null}
@@ -41,44 +41,38 @@ export default function OurToursSection() {
             <Link
               key={tour.id}
               href={`/${currentLocale}/tours/${tour.id}`}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-[1.02] hover:border-2 hover:border-[#D1B06B] border-2 border-transparent transition-all duration-300"
+              className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border-2 border-transparent bg-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-[#D1B06B] hover:shadow-xl"
             >
-              {/* Image */}
-              <div className="relative w-full aspect-video bg-gray-300">
+              <div className="relative h-48 w-full shrink-0 overflow-hidden bg-gray-300">
                 {cardSrc ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={cardSrc} alt={tour.name} className="h-full w-full object-cover" />
+                  <img
+                    src={cardSrc}
+                    alt={tour.name}
+                    className="h-full w-full object-cover"
+                  />
                 ) : null}
               </div>
 
-              {/* Card Content */}
-              <div className="p-6 space-y-4">
-                {/* Location/Category */}
-                <p className="text-sm text-[#2b1d19]/60 font-medium">
-                  {tour.duration}
-                </p>
-
-                {/* Title */}
-                <h3 className="text-xl font-playfair font-bold text-[#2b1d19] leading-tight line-clamp-2">
+              <div className="flex flex-grow flex-col p-6">
+                <p className="text-sm font-medium text-[#2b1d19]/60">{tour.duration}</p>
+                <h3 className="mt-2 text-xl font-playfair font-bold leading-tight text-[#2b1d19] line-clamp-2">
                   {tour.name}
                 </h3>
-
-                {/* Description */}
-                <p className="text-sm text-[#2b1d19]/70 line-clamp-2">
+                <p className="mt-2 flex-grow text-sm leading-relaxed text-[#2b1d19]/70 line-clamp-2">
                   {tour.description}
                 </p>
 
-                {/* Price and Button Row */}
-                <div className="flex items-center justify-between pt-2">
-                  <div>
+                <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+                  <div className="min-w-0">
                     <p className="text-2xl font-bold text-[#2b1d19]">
                       {tour.pricePerPerson.toLocaleString()}Դ
                     </p>
                     <p className="text-xs text-[#2b1d19]/60">{t("ourTours.perTour")}</p>
                   </div>
-                  <button className="rounded-full bg-[#D1B06B] hover:bg-[#C7A158] text-[#1A0F0F] font-semibold px-6 py-2.5 text-sm transition-colors duration-200 shadow-md hover:shadow-lg">
+                  <span className="shrink-0 rounded-full bg-[#D1B06B] px-5 py-2.5 text-center text-sm font-semibold text-[#1A0F0F] shadow-md transition-colors duration-200 hover:bg-[#C7A158]">
                     {t("ourTours.viewDetails")}
-                  </button>
+                  </span>
                 </div>
               </div>
             </Link>
