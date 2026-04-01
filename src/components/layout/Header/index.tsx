@@ -1,7 +1,6 @@
 "use client";
 
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useBookingModal } from "@/contexts/BookingModalContext";
 import { useNavItems } from "@/hooks/useNavItems";
 import { defaultLocale, locales } from "@/i18n/config";
 import Image from "next/image";
@@ -13,7 +12,6 @@ import { useTranslation } from "react-i18next";
 const Header = () => {
   const { t } = useTranslation("common");
   const navItems = useNavItems();
-  const { openModal } = useBookingModal();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const segments = pathname.split("/").filter(Boolean);
@@ -127,12 +125,14 @@ const Header = () => {
                 );
               })}
               <LanguageSwitcher />
+              {/* Mobile / tablet (&lt; md): Book now hidden — restore if needed
               <button
                 onClick={openModal}
                 className="mt-2 w-full rounded-full border border-[#D4A755] bg-transparent px-4 py-2 font-playfair text-sm font-semibold text-[#D4A755] transition-all hover:bg-[#D4A755] hover:text-[#1A0F0F]"
               >
                 {t("navbar.bookNow")}
               </button>
+              */}
             </div>
           </nav>
         </div>
