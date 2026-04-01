@@ -42,6 +42,26 @@
     "viewDetails": "Մանրամասներ",
     "viewAll": "Դիտել բոլոր տուրերը"
   },
+  "toursPage": {
+    "pageTitle": "Բացահայտեք Հայաստանի տուրերը",
+    "filtersTitle": "Զտիչներ",
+    "searchLabel": "Որոնում",
+    "searchPlaceholder": "Անվանում կամ նկարագրություն",
+    "durationLabel": "Տևողություն",
+    "durationAll": "Բոլորը",
+    "sortLabel": "Դասավորել",
+    "sortDefault": "Լռելյայն",
+    "sortPriceAsc": "Գին՝ աճով",
+    "sortPriceDesc": "Գին՝ նվազման",
+    "sortName": "Անվանում՝ Ա–Ֆ",
+    "priceMin": "Նվազագույն գին",
+    "priceMax": "Առավելագույն գին",
+    "currency": "֏",
+    "reset": "Վերակայել",
+    "showing": "Ցուցադրվում է {{filtered}}-ը {{total}}-ից",
+    "noResults": "Ձեր զտիչներին համապատասխան տուրեր չկան։",
+    "clearSearch": "Մաքրել որոնումը"
+  },
   "guests": {
     "eyebrow": "ՀՅՈՒՐԵՐԻ ՊԱՏՄՈՒԹՅՈՒՆՆԵՐ",
     "title": "Ինչու են հյուրերը սիրում Wineroad-ը",

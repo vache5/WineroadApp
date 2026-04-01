@@ -31,23 +31,21 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b border-[#D4A755]/25 bg-[#1A0F0F]/95 text-white shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md supports-[backdrop-filter]:bg-[#1A0F0F]/88">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[76px] md:px-8">
-        {/* Brand — logo only */}
+        {/* Brand — logo fills bar height; header stays compact */}
         <Link
           href={withLocale("/")}
-          className="group relative flex shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F]"
+          className="group relative flex h-[100px] w-[100px] shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F] md:h-[62px] md:w-[62px]"
           aria-label={`Wine Road — ${t("navbar.home")}`}
         >
-          <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#D4A755]/20 via-transparent to-[#D4A755]/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden />
-          <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-[#D4A755]/40 bg-gradient-to-b from-white to-[#F5F0E8] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_2px_12px_rgba(0,0,0,0.2)] transition-[border-color,transform] duration-300 group-hover:border-[#D4A755]/65 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_20px_rgba(212,167,85,0.15)] sm:h-12 sm:w-12">
-            <Image
-              src="/images/logo.JPG"
-              alt=""
-              width={48}
-              height={48}
-              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
-              priority
-            />
-          </span>
+          <Image
+            src="/images/logo-Photoroom.png"
+            alt=""
+            width={160}
+            height={160}
+            className="h-full w-full object-contain object-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+            priority
+            sizes="(max-width: 768px) 60px, 62px"
+          />
         </Link>
 
         {/* Navigation Links - Desktop */}

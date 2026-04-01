@@ -42,6 +42,26 @@
     "viewDetails": "Подробнее",
     "viewAll": "Смотреть все туры"
   },
+  "toursPage": {
+    "pageTitle": "Туры по Армении",
+    "filtersTitle": "Фильтры",
+    "searchLabel": "Поиск",
+    "searchPlaceholder": "Название или описание",
+    "durationLabel": "Длительность",
+    "durationAll": "Любая",
+    "sortLabel": "Сортировка",
+    "sortDefault": "Как в списке",
+    "sortPriceAsc": "Цена: по возрастанию",
+    "sortPriceDesc": "Цена: по убыванию",
+    "sortName": "Название: А–Я",
+    "priceMin": "Цена от",
+    "priceMax": "Цена до",
+    "currency": "֏",
+    "reset": "Сбросить",
+    "showing": "Показано {{filtered}} из {{total}} туров",
+    "noResults": "Нет туров по выбранным фильтрам.",
+    "clearSearch": "Очистить поиск"
+  },
   "guests": {
     "eyebrow": "ИСТОРИИ ГОСТЕЙ",
     "title": "Почему гости любят Wineroad",

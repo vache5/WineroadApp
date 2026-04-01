@@ -42,6 +42,26 @@
     "viewDetails": "View Details",
     "viewAll": "View All Tours"
   },
+  "toursPage": {
+    "pageTitle": "Discover Armenia Tours",
+    "filtersTitle": "Filters",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Name or description",
+    "durationLabel": "Duration",
+    "durationAll": "All durations",
+    "sortLabel": "Sort",
+    "sortDefault": "Default order",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "sortName": "Name: A–Z",
+    "priceMin": "Min price",
+    "priceMax": "Max price",
+    "currency": "֏",
+    "reset": "Reset",
+    "showing": "Showing {{filtered}} of {{total}} tours",
+    "noResults": "No tours match your filters.",
+    "clearSearch": "Clear search"
+  },
   "guests": {
     "eyebrow": "CUSTOMER STORIES",
     "title": "Why Guests Love Wineroad",
