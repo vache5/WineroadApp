@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import { ToastProvider } from "@/components/ToastProvider";
 
 import { Playfair_Display } from "next/font/google";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={playfair.className}>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
         {children}
+        <ToastProvider />
       </body>
     </html>
   );

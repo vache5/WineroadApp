@@ -5,7 +5,11 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { publicJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
-import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
+import { toast } from "react-toastify";
+import { toBrowserImageSrc } from "@/lib/tourImageSrc";
+
+const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
+const BOOKING_SUCCESS_MSG = "Booking request sent. We will contact you shortly.";
 
 export default function TourDetailsPage() {
   const params = useParams();
@@ -19,7 +23,7 @@ export default function TourDetailsPage() {
   const [peopleCount, setPeopleCount] = useState(1);
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [bookingState, setBookingState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [bookingState, setBookingState] = useState<"idle" | "submitting" | "error">("idle");
   const [bookingMsg, setBookingMsg] = useState("");
 
   useEffect(() => {
@@ -44,7 +48,7 @@ export default function TourDetailsPage() {
     if (!tour) return [];
     const urls: string[] = [];
     const add = (u?: string | null) => {
-      const s = nonEmptyImageUrl(u);
+      const s = toBrowserImageSrc(u);
       if (s && !urls.includes(s)) urls.push(s);
     };
     add(tour.mainImage);
@@ -97,17 +101,34 @@ export default function TourDetailsPage() {
     setBookingState("submitting");
     setBookingMsg("");
     try {
-      const res = await publicJson<{ id: string }>("/orders", {
+      const res = await fetch(FORMSPREE_TOUR_ORDER_URL, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
-          tourId: tour.id,
-          userName: userName.trim(),
-          userEmail: userEmail.trim(),
-          numberOfPeople: peopleCount,
+          name: userName.trim(),
+          email: userEmail.trim(),
+          tour_id: tour.id,
+          tour_name: tour.name,
+          preferred_date: selectedDate,
+          number_of_people: peopleCount,
+          price_per_person_amd: tour.pricePerPerson,
+          total_amd: totalPrice,
         }),
       });
-      setBookingState("success");
-      setBookingMsg(`Booking request sent. Order #${res.id}`);
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) {
+        throw new Error(data.error ?? "Booking failed");
+      }
+      toast.success(BOOKING_SUCCESS_MSG);
+      setSelectedDate("");
+      setPeopleCount(1);
+      setUserName("");
+      setUserEmail("");
+      setBookingState("idle");
+      setBookingMsg("");
     } catch (e) {
       setBookingState("error");
       setBookingMsg(e instanceof Error ? e.message : "Booking failed");
@@ -394,14 +415,8 @@ export default function TourDetailsPage() {
                 >
                   {bookingState === "submitting" ? "Booking..." : "Book Now"}
                 </button>
-                {bookingMsg ? (
-                  <p
-                    className={`text-sm ${
-                      bookingState === "success" ? "text-green-300" : "text-red-300"
-                    }`}
-                  >
-                    {bookingMsg}
-                  </p>
+                {bookingMsg && bookingState === "error" ? (
+                  <p className="text-sm text-red-300">{bookingMsg}</p>
                 ) : null}
 
                 <p className="text-xs text-gray-400 text-center">

@@ -28,21 +28,21 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#D4A755]/25 bg-[#1A0F0F]/95 text-white shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md supports-[backdrop-filter]:bg-[#1A0F0F]/88">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[76px] md:px-8">
+      <div className="mx-auto flex h-[80px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[76px] md:px-8">
         {/* Brand — logo fills bar height; header stays compact */}
         <Link
           href={withLocale("/")}
-          className="group relative flex h-[100px] w-[100px] shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F] md:h-[62px] md:w-[62px]"
+          className="group relative flex h-[120px] w-[120px] shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F] md:h-[80px] md:w-[80px]"
           aria-label={`Wine Road — ${t("navbar.home")}`}
         >
           <Image
             src="/images/logo-Photoroom.png"
             alt=""
-            width={160}
-            height={160}
+            width={200}
+            height={200}
             className="h-full w-full object-contain object-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out group-hover:scale-[1.03]"
             priority
-            sizes="(max-width: 768px) 60px, 62px"
+            sizes="(max-width: 768px) 120px, 80px"
           />
         </Link>
 

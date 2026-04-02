@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useGalleryApi } from "@/hooks/useGalleryApi";
-import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
+import { nonEmptyImageUrl, toBrowserImageSrc } from "@/lib/tourImageSrc";
 
 function looksLikePhotoFileName(input: string) {
   const v = input.trim();
@@ -70,7 +70,7 @@ export default function GalleryPage() {
             {items
               .filter((item) => nonEmptyImageUrl(item.imageUrl))
               .map((item) => {
-                const src = nonEmptyImageUrl(item.imageUrl)!;
+                const src = toBrowserImageSrc(item.imageUrl)!;
                 const title = item.title.trim();
                 const isFileName = looksLikePhotoFileName(title);
                 const label = !isFileName && title ? title : t("gallery.photoFallback");

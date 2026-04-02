@@ -6,6 +6,7 @@ import { ImagePlus, Upload, X } from "lucide-react";
 import { AdminLoading } from "@/components/admin/AdminLoading";
 import { adminFetch, adminJson, publicJson } from "@/lib/api/adminClient";
 import { uploadAdminTourImage } from "@/lib/adminUploadImage";
+import { toBrowserImageSrc } from "@/lib/tourImageSrc";
 import type { ApiGalleryItem } from "@/types/api";
 
 type QueuedImage = {
@@ -455,7 +456,7 @@ export default function AdminGalleryPage() {
                 <div className="relative aspect-[4/3] bg-black/40">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={item.imageUrl}
+                    src={toBrowserImageSrc(item.imageUrl) ?? item.imageUrl}
                     alt={item.title || "Gallery"}
                     className="h-full w-full object-cover"
                   />

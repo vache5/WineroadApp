@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGalleryApi } from "@/hooks/useGalleryApi";
 import { defaultLocale, locales } from "@/i18n/config";
-import { nonEmptyImageUrl } from "@/lib/tourImageSrc";
+import { nonEmptyImageUrl, toBrowserImageSrc } from "@/lib/tourImageSrc";
 
 const PREVIEW_COUNT = 6;
 
@@ -140,7 +140,7 @@ export default function FeaturedTours() {
               {previewItems.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 flex-1">
                   {previewItems.map((item) => {
-                    const src = nonEmptyImageUrl(item.imageUrl)!;
+                    const src = toBrowserImageSrc(item.imageUrl)!;
                     const label = item.title.trim() || t("gallery.photoFallback");
                     return (
                       <div
