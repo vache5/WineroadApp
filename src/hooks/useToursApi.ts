@@ -26,7 +26,7 @@ export function useToursApi(refreshMs?: number) {
   }, [loadTours]);
 
   useEffect(() => {
-    if (!refreshMs) return;
+    if (typeof refreshMs !== "number" || !Number.isFinite(refreshMs) || refreshMs <= 0) return;
     const id = window.setInterval(() => {
       void loadTours();
     }, refreshMs);

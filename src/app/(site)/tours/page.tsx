@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 import { useToursApi } from "@/hooks/useToursApi";
 import { defaultLocale, locales } from "@/i18n/config";
+import { tourDisplayName } from "@/lib/tourDisplayName";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 import type { ApiTour } from "@/types/api";
 
@@ -123,7 +124,7 @@ export default function ToursPage() {
   const currency = t("toursPage.currency");
 
   return (
-    <div className="min-h-screen bg-[#151313]">
+    <div className="min-h-screen bg-[#151313]" suppressHydrationWarning>
       <div className="border-b border-[#D4A755]/20 bg-[#1A0F0F] py-14 text-white">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <h1 className="text-center font-playfair text-4xl tracking-wide sm:text-5xl">
@@ -306,7 +307,7 @@ export default function ToursPage() {
                       {cardImage ? (
                         <Image
                           src={cardImage}
-                          alt={tour.name}
+                          alt={tourDisplayName(tour.name)}
                           fill
                           sizes="(max-width: 640px) 100vw, 50vw"
                           className="object-cover"
@@ -315,7 +316,9 @@ export default function ToursPage() {
                       ) : null}
                     </div>
                     <div className="flex flex-grow flex-col p-6">
-                      <h3 className="line-clamp-2 font-playfair text-xl text-white">{tour.name}</h3>
+                      <h3 className="line-clamp-2 font-playfair text-xl text-white">
+                        {tourDisplayName(tour.name)}
+                      </h3>
                       <p className="mt-2 line-clamp-2 flex-grow text-sm leading-relaxed text-gray-400">
                         {tour.description}
                       </p>

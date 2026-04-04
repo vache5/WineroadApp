@@ -65,8 +65,8 @@ const englishSections: PolicySection[] = [
     title: "7. Contacts",
     content: [
       "If you have questions regarding your privacy, please contact us:",
-      "Email: info@wineroad.am",
-      "Phone/WhatsApp: +374 99 550 070",
+      "Email: contact@wineroad.am",
+      "Phone/WhatsApp: +374 44 499441",
       "Address: Yerevan, Armenia.",
     ],
   },

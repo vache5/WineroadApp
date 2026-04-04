@@ -42,7 +42,7 @@ export default function FeaturedTours() {
         style={{ backgroundColor: "rgba(0,0,0,0.65)" }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-4 sm:px-6 md:px-8 lg:max-w-6xl xl:max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-playfair font-bold text-[#F5E3C3] mb-4 tracking-wider uppercase">
             {t("homepage.featuredHeading")}

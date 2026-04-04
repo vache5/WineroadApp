@@ -22,7 +22,7 @@ export function HeroBanner() {
         </div>
 
         {/* Centered Content */}
-        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white md:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center text-white md:max-w-5xl md:px-8">
           <div className="space-y-6">
             <h1 className="font-playfair text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl" style={{ fontWeight: 900 }}>
               {t("hero.titleLine1")}

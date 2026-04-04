@@ -86,7 +86,7 @@ export default function GuestsLoveWineroad() {
 
   return (
     <section className="bg-[#151313] py-20">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 md:px-8 lg:max-w-6xl xl:max-w-7xl">
         {/* Shared Heading Area */}
         <div className="text-center space-y-4 mb-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#D1B06B]">

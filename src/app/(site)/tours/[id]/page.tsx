@@ -6,12 +6,13 @@ import Link from "next/link";
 import { publicJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import { toBrowserImageSrc } from "@/lib/tourImageSrc";
 
 const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
-const BOOKING_SUCCESS_MSG = "Booking request sent. We will contact you shortly.";
 
 export default function TourDetailsPage() {
+  const { t } = useTranslation("common");
   const params = useParams();
   const tourId = params?.id as string;
   const locale = (params?.locale as string) ?? "en";
@@ -90,12 +91,12 @@ export default function TourDetailsPage() {
   const handleBookNow = async () => {
     if (!selectedDate) {
       setBookingState("error");
-      setBookingMsg("Please select date.");
+      setBookingMsg(t("tourDetail.errorSelectDate"));
       return;
     }
     if (!userName.trim() || !userEmail.trim()) {
       setBookingState("error");
-      setBookingMsg("Please enter your name and email.");
+      setBookingMsg(t("tourDetail.errorNameEmail"));
       return;
     }
     setBookingState("submitting");
@@ -120,9 +121,9 @@ export default function TourDetailsPage() {
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
-        throw new Error(data.error ?? "Booking failed");
+        throw new Error(data.error ?? t("tourDetail.bookingFailed"));
       }
-      toast.success(BOOKING_SUCCESS_MSG);
+      toast.success(t("tourDetail.bookingSuccess"));
       setSelectedDate("");
       setPeopleCount(1);
       setUserName("");
@@ -131,7 +132,7 @@ export default function TourDetailsPage() {
       setBookingMsg("");
     } catch (e) {
       setBookingState("error");
-      setBookingMsg(e instanceof Error ? e.message : "Booking failed");
+      setBookingMsg(e instanceof Error ? e.message : t("tourDetail.bookingFailed"));
     }
   };
 
@@ -294,15 +295,15 @@ export default function TourDetailsPage() {
           <div className="w-full lg:w-[30%] lg:flex-shrink-0">
             <div className="bg-[#2B1D1A] p-6 rounded-lg shadow-lg sticky top-24 space-y-6">
               <div>
-                <h3 className="text-2xl font-playfair text-white mb-2">Book This Tour</h3>
-                <p className="text-gray-400 text-sm">Reserve your spot today</p>
+                <h3 className="text-2xl font-playfair text-white mb-2">{t("tourDetail.bookThisTour")}</h3>
+                <p className="text-gray-400 text-sm">{t("tourDetail.reserveSubtitle")}</p>
               </div>
 
               <div className="space-y-4">
                 {/* Date Selection */}
                 <div>
                   <label className="block text-sm font-medium text-[#D1B06B] mb-2">
-                    Select Date
+                    {t("tourDetail.selectDate")}
                   </label>
                   <input
                     type="date"
@@ -316,7 +317,7 @@ export default function TourDetailsPage() {
                 {/* People Count */}
                 <div>
                   <label className="block text-sm font-medium text-[#D1B06B] mb-2">
-                    Number of People
+                    {t("tourDetail.numberOfPeople")}
                   </label>
                   <div className="flex items-center gap-3">
                     <button
@@ -367,12 +368,10 @@ export default function TourDetailsPage() {
                       </svg>
                     </button>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Maximum 50 people
-                  </p>
+                  <p className="text-xs text-gray-400 mt-1">{t("tourDetail.maxPeopleHint")}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#D1B06B] mb-2">Your name</label>
+                  <label className="block text-sm font-medium text-[#D1B06B] mb-2">{t("tourDetail.yourName")}</label>
                   <input
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
@@ -380,7 +379,7 @@ export default function TourDetailsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#D1B06B] mb-2">Your email</label>
+                  <label className="block text-sm font-medium text-[#D1B06B] mb-2">{t("tourDetail.yourEmail")}</label>
                   <input
                     type="email"
                     value={userEmail}
@@ -392,15 +391,15 @@ export default function TourDetailsPage() {
                 {/* Price Display */}
                 <div className="pt-4 border-t border-gray-700">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-300">Price per person</span>
+                    <span className="text-gray-300">{t("tourDetail.pricePerPerson")}</span>
                     <span className="text-white font-medium">{tour.pricePerPerson.toLocaleString()}Դ</span>
                   </div>
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-gray-300">People</span>
-                    <span className="text-white font-medium">× {peopleCount}</span>
+                    <span className="text-gray-300">{t("tourDetail.people")}</span>
+                    <span className="text-white font-medium">{t("tourDetail.peopleCountLine", { count: peopleCount })}</span>
                   </div>
                   <div className="flex justify-between items-center pt-4 border-t border-gray-700">
-                    <span className="text-lg font-semibold text-white">Total</span>
+                    <span className="text-lg font-semibold text-white">{t("tourDetail.total")}</span>
                     <span className="text-2xl font-bold text-[#D1B06B]">
                       {totalPrice.toLocaleString()}Դ
                     </span>
@@ -413,15 +412,13 @@ export default function TourDetailsPage() {
                   disabled={!selectedDate || bookingState === "submitting"}
                   className="w-full rounded-lg bg-[#D1B06B] px-6 py-4 text-lg font-semibold text-[#1A0F0F] hover:bg-[#C1A05B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
-                  {bookingState === "submitting" ? "Booking..." : "Book Now"}
+                  {bookingState === "submitting" ? t("tourDetail.bookingSubmitting") : t("tourDetail.bookNow")}
                 </button>
                 {bookingMsg && bookingState === "error" ? (
                   <p className="text-sm text-red-300">{bookingMsg}</p>
                 ) : null}
 
-                <p className="text-xs text-gray-400 text-center">
-                  Free cancellation up to 24 hours before tour
-                </p>
+                <p className="text-xs text-gray-400 text-center">{t("tourDetail.freeCancellation")}</p>
               </div>
             </div>
           </div>

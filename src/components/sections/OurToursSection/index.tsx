@@ -19,7 +19,7 @@ export default function OurToursSection() {
 
   return (
     <section className="bg-[#1A0F0F] py-10 md:py-20">
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
+      <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 md:px-8 lg:max-w-6xl xl:max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-playfair font-bold text-[#FFFFFF] mb-4">

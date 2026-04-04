@@ -52,10 +52,10 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <a
-                    href="tel:+37499550070"
+                    href="tel:+37444499441"
                     className="text-lg font-semibold text-gray-900 hover:text-[#D7B46A] transition-colors block cursor-pointer"
                   >
-                    +374 99 550 070
+                    +374 44 499441
                   </a>
                   <p className="text-sm text-gray-500 mt-1">{t("contact.info.available")}</p>
                 </div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
             </h2>
             <div className="space-y-4">
               <a
-                href="https://wa.me/37499550070"
+                href="https://wa.me/37444499441"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg"
@@ -147,7 +147,7 @@ export default function ContactPage() {
               </a>
 
               <a
-                href="https://t.me/armeniawinetours"
+                href="https://t.me/+37444499441"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-3 bg-[#0088cc] hover:bg-[#0077b5] text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg"

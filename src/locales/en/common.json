@@ -151,6 +151,26 @@
       "body": "Between wine and culture. Between person and place. Between past and present."
     }
   },
+  "tourDetail": {
+    "bookThisTour": "Book This Tour",
+    "reserveSubtitle": "Reserve your spot today",
+    "selectDate": "Select Date",
+    "numberOfPeople": "Number of People",
+    "maxPeopleHint": "Maximum 50 people",
+    "yourName": "Your name",
+    "yourEmail": "Your email",
+    "pricePerPerson": "Price per person",
+    "people": "People",
+    "peopleCountLine": "× {{count}}",
+    "total": "Total",
+    "bookingSubmitting": "Booking...",
+    "bookNow": "Book Now",
+    "freeCancellation": "Free cancellation up to 24 hours before tour",
+    "errorSelectDate": "Please select date.",
+    "errorNameEmail": "Please enter your name and email.",
+    "bookingFailed": "Booking failed",
+    "bookingSuccess": "Booking request sent. We will contact you shortly."
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "We're here to help you plan your perfect Armenian wine tour experience",
@@ -158,7 +178,7 @@
       "title": "Contact Information",
       "available": "Available 24/7",
       "emailAnytime": "Email us anytime",
-      "address": "Abovyan Street, Yerevan, Armenia",
+      "address": "Yerevan, Armenia",
       "visitOffice": "Visit our office"
     },
     "quick": {
@@ -188,8 +208,7 @@
     "blog": "Blog",
     "terms": "Terms & Privacy",
     "contactUs": "Contact Us",
-    "address": "Abovyan Street, Yerevan, Armenia",
-    "hours": "Mon - Sat: 9:00 AM - 6:00 PM",
+    "address": "Yerevan, Armenia",
     "followUs": "Follow Us",
     "messageUs": "Message Us",
     "whyChoose": "Why Choose Us?",
@@ -200,6 +219,6 @@
       "booking": "Secure online booking"
     },
     "copyright": "All rights reserved.",
-    "poweredBy": "Powered By VCode"
+    "poweredBy": "This site was created by <vcode>VCode</vcode>."
   }
 }
