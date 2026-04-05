@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useToursApi } from "@/hooks/useToursApi";
 import { defaultLocale, locales } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
+import { tourStrings } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 
 export default function OurToursSection() {
@@ -13,8 +15,8 @@ export default function OurToursSection() {
   const { tours, loading } = useToursApi(20000);
   const featuredTours = tours.slice(0, 3);
   const segments = pathname.split("/").filter(Boolean);
-  const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
-    ? segments[0]
+  const currentLocale: Locale = locales.includes(segments[0] as Locale)
+    ? (segments[0] as Locale)
     : defaultLocale;
 
   return (
@@ -37,6 +39,7 @@ export default function OurToursSection() {
           ) : null}
           {featuredTours.map((tour) => {
             const cardSrc = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
+            const copy = tourStrings(tour, currentLocale);
             return (
             <Link
               key={tour.id}
@@ -48,19 +51,19 @@ export default function OurToursSection() {
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={cardSrc}
-                    alt={tour.name}
+                    alt={copy.title}
                     className="h-full w-full object-cover"
                   />
                 ) : null}
               </div>
 
               <div className="flex flex-grow flex-col p-6">
-                <p className="text-sm font-medium text-[#2b1d19]/60">{tour.duration}</p>
+                <p className="text-sm font-medium text-[#2b1d19]/60">{copy.duration}</p>
                 <h3 className="mt-2 text-xl font-playfair font-bold leading-tight text-[#2b1d19] line-clamp-2">
-                  {tour.name}
+                  {copy.title}
                 </h3>
                 <p className="mt-2 flex-grow text-sm leading-relaxed text-[#2b1d19]/70 line-clamp-2">
-                  {tour.description}
+                  {copy.description}
                 </p>
 
                 <div className="mt-auto flex items-end justify-between gap-3 pt-4">

@@ -152,6 +152,10 @@
     }
   },
   "tourDetail": {
+    "overviewHeading": "Обзор",
+    "durationLabel": "Продолжительность",
+    "departureDateLabel": "Дата отправления",
+    "priceLabel": "Цена",
     "bookThisTour": "Забронировать этот тур",
     "reserveSubtitle": "Забронируйте место сегодня",
     "selectDate": "Выберите дату",

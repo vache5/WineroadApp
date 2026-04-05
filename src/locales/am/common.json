@@ -152,6 +152,10 @@
     }
   },
   "tourDetail": {
+    "overviewHeading": "Նկարագրություն",
+    "durationLabel": "Տևողություն",
+    "departureDateLabel": "Մեկնման ամսաթիվ",
+    "priceLabel": "Արժեք",
     "bookThisTour": "Ամրագրել այս տուրը",
     "reserveSubtitle": "Ամրագրեք ձեր տեղը այսօր",
     "selectDate": "Ընտրեք ամսաթիվ",

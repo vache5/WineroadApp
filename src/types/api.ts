@@ -1,11 +1,22 @@
 /** API uses MongoDB ObjectIds as strings. */
+export type TourLocaleBlock = {
+  title: string;
+  description: string;
+  duration: string;
+};
+
+export type TourLocales = {
+  en: TourLocaleBlock;
+  ru: TourLocaleBlock;
+  am: TourLocaleBlock;
+};
+
 export type ApiTour = {
   id: string;
-  name: string;
-  description: string;
+  /** Title, description, and duration in English, Russian, and Armenian. */
+  locales: TourLocales;
   pricePerPerson: number;
   date: string;
-  duration: string;
   mainImage: string;
   galleryImages: string[];
   imageUrl?: string;
