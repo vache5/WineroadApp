@@ -17,7 +17,7 @@ import {
   upcomingBookableDates,
 } from "@/lib/tourBookableDates";
 
-const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
+const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/xbdpqrgq";
 
 export default function TourDetailsPage() {
   const { t } = useTranslation("common");
