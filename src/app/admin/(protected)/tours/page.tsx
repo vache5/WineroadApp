@@ -8,6 +8,7 @@ import { adminFetch, publicJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
 import { adminTourTitle } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
+import { resolvedBookableDates } from "@/lib/tourBookableDates";
 
 export default function AdminToursPage() {
   const [tours, setTours] = useState<ApiTour[]>([]);
@@ -86,7 +87,7 @@ export default function AdminToursPage() {
           <thead className="bg-[#1E1411] text-white/60">
             <tr>
               <th className="px-4 py-3 font-medium">Tour</th>
-              <th className="px-4 py-3 font-medium">Date</th>
+              <th className="px-4 py-3 font-medium">Bookable dates</th>
               <th className="px-4 py-3 font-medium">Price</th>
               <th className="px-4 py-3 font-medium text-right">Actions</th>
             </tr>
@@ -124,7 +125,9 @@ export default function AdminToursPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-white/70">{t.date}</td>
+                  <td className="max-w-[14rem] truncate px-4 py-3 text-white/70" title={resolvedBookableDates(t).join(", ")}>
+                    {resolvedBookableDates(t).join(", ") || "—"}
+                  </td>
                   <td className="px-4 py-3 text-[#D7B46A]">{t.pricePerPerson.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">

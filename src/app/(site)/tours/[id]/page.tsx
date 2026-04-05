@@ -11,6 +11,11 @@ import { defaultLocale, locales } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { tourStrings } from "@/lib/tourLocale";
 import { toBrowserImageSrc } from "@/lib/tourImageSrc";
+import {
+  formatIsoDateList,
+  resolvedBookableDates,
+  upcomingBookableDates,
+} from "@/lib/tourBookableDates";
 
 const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
 
@@ -51,6 +56,24 @@ export default function TourDetailsPage() {
       cancelled = true;
     };
   }, [tourId]);
+
+  const intlLocale = useMemo(
+    () => (currentLocale === "am" ? "hy-AM" : currentLocale === "ru" ? "ru-RU" : "en-US"),
+    [currentLocale],
+  );
+
+  const allBookableIso = useMemo(() => (tour ? resolvedBookableDates(tour) : []), [tour]);
+  const bookableUpcoming = useMemo(() => (tour ? upcomingBookableDates(tour) : []), [tour]);
+  const availableDatesDisplay = useMemo(
+    () => formatIsoDateList(allBookableIso, intlLocale),
+    [allBookableIso, intlLocale],
+  );
+
+  useEffect(() => {
+    if (!tour) return;
+    const upcoming = upcomingBookableDates(tour);
+    setSelectedDate((prev) => (prev && upcoming.includes(prev) ? prev : ""));
+  }, [tour]);
 
   const allImages = useMemo(() => {
     if (!tour) return [];
@@ -100,6 +123,11 @@ export default function TourDetailsPage() {
     if (!selectedDate) {
       setBookingState("error");
       setBookingMsg(t("tourDetail.errorSelectDate"));
+      return;
+    }
+    if (!bookableUpcoming.includes(selectedDate)) {
+      setBookingState("error");
+      setBookingMsg(t("tourDetail.errorInvalidDate"));
       return;
     }
     if (!userName.trim() || !userEmail.trim()) {
@@ -288,8 +316,10 @@ export default function TourDetailsPage() {
                   <p className="text-white font-medium">{copy.duration}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400 mb-1">{t("tourDetail.departureDateLabel")}</p>
-                  <p className="text-white font-medium">{tour.date}</p>
+                  <p className="text-sm text-gray-400 mb-1">{t("tourDetail.availableDatesLabel")}</p>
+                  <p className="text-white font-medium">
+                    {availableDatesDisplay || "—"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400 mb-1">{t("tourDetail.priceLabel")}</p>
@@ -308,18 +338,29 @@ export default function TourDetailsPage() {
               </div>
 
               <div className="space-y-4">
-                {/* Date Selection */}
+                {/* Date Selection — only admin-configured upcoming days */}
                 <div>
                   <label className="block text-sm font-medium text-[#D1B06B] mb-2">
                     {t("tourDetail.selectDate")}
                   </label>
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    min={new Date().toISOString().split("T")[0]}
-                    className="w-full rounded-lg bg-[#3a2a27] border border-[#4a3a35] p-3 text-sm text-gray-200 focus:outline-none focus:border-[#D1B06B] transition-colors"
-                  />
+                  {bookableUpcoming.length === 0 ? (
+                    <p className="rounded-lg border border-[#4a3a35] bg-[#2a201d] px-3 py-3 text-sm text-gray-400">
+                      {t("tourDetail.noBookableDates")}
+                    </p>
+                  ) : (
+                    <select
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="w-full rounded-lg bg-[#3a2a27] border border-[#4a3a35] p-3 text-sm text-gray-200 focus:outline-none focus:border-[#D1B06B] transition-colors"
+                    >
+                      <option value="">{t("tourDetail.selectDatePlaceholder")}</option>
+                      {bookableUpcoming.map((iso) => (
+                        <option key={iso} value={iso}>
+                          {formatIsoDateList([iso], intlLocale)}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 {/* People Count */}
@@ -417,7 +458,9 @@ export default function TourDetailsPage() {
                 {/* Book Button */}
                 <button
                   onClick={handleBookNow}
-                  disabled={!selectedDate || bookingState === "submitting"}
+                  disabled={
+                    !selectedDate || bookableUpcoming.length === 0 || bookingState === "submitting"
+                  }
                   className="w-full rounded-lg bg-[#D1B06B] px-6 py-4 text-lg font-semibold text-[#1A0F0F] hover:bg-[#C1A05B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
                   {bookingState === "submitting" ? t("tourDetail.bookingSubmitting") : t("tourDetail.bookNow")}

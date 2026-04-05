@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ApiTour, TourLocales } from "@/types/api";
+import { resolvedBookableDates } from "@/lib/tourBookableDates";
 import { adminFetch } from "@/lib/api/adminClient";
 import type { Locale } from "@/i18n/config";
 import { locales } from "@/i18n/config";
@@ -21,12 +22,14 @@ const emptyLocales = (): TourLocales => ({
 export type TourFormValues = {
   locales: TourLocales;
   pricePerPerson: string;
-  date: string;
+  /** YYYY-MM-DD; at least one required on save. */
+  bookableDates: string[];
   mainImage: string;
   galleryImages: string[];
 };
 
 export function tourToFormValues(tour: ApiTour): TourFormValues {
+  const fromApi = resolvedBookableDates(tour);
   return {
     locales: {
       en: { ...tour.locales.en },
@@ -34,7 +37,7 @@ export function tourToFormValues(tour: ApiTour): TourFormValues {
       am: { ...tour.locales.am },
     },
     pricePerPerson: String(tour.pricePerPerson),
-    date: tour.date,
+    bookableDates: fromApi.length ? fromApi : [""],
     mainImage: tour.mainImage ?? tour.imageUrl ?? "",
     galleryImages: tour.galleryImages ?? [],
   };
@@ -43,7 +46,7 @@ export function tourToFormValues(tour: ApiTour): TourFormValues {
 export const emptyTourForm: TourFormValues = {
   locales: emptyLocales(),
   pricePerPerson: "",
-  date: "",
+  bookableDates: [""],
   mainImage: "",
   galleryImages: [""],
 };
@@ -99,6 +102,21 @@ export function TourForm({ values, onChange, disabled }: TourFormProps) {
 
   function addGalleryImage() {
     patch("galleryImages", [...values.galleryImages, ""]);
+  }
+
+  function setBookableDateAt(index: number, value: string) {
+    const next = [...values.bookableDates];
+    next[index] = value;
+    patch("bookableDates", next);
+  }
+
+  function addBookableDate() {
+    patch("bookableDates", [...values.bookableDates, ""]);
+  }
+
+  function removeBookableDate(index: number) {
+    const next = values.bookableDates.filter((_, i) => i !== index);
+    patch("bookableDates", next.length ? next : [""]);
   }
 
   function removeGalleryImage(index: number) {
@@ -210,19 +228,41 @@ export function TourForm({ values, onChange, disabled }: TourFormProps) {
           required
         />
       </div>
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-white/80" htmlFor="tour-date">
-          Date (YYYY-MM-DD)
-        </label>
-        <input
-          id="tour-date"
-          type="date"
-          className="w-full rounded-lg border border-white/15 bg-[#1E1411] px-3 py-2 text-sm text-white outline-none ring-[#D7B46A] focus:ring-2"
-          value={values.date}
-          onChange={(e) => patch("date", e.target.value)}
-          disabled={disabled}
-          required
-        />
+      <div className="md:col-span-2 space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium text-white/80">Bookable dates</label>
+          <button
+            type="button"
+            onClick={addBookableDate}
+            disabled={disabled}
+            className="rounded-md border border-white/20 px-2 py-1 text-xs text-white/80 hover:bg-white/5 disabled:opacity-50"
+          >
+            Add date
+          </button>
+        </div>
+        <p className="text-xs text-white/45">
+          Visitors can only book this tour on these calendar days. The tour stays visible either way.
+        </p>
+        {values.bookableDates.map((d, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              type="date"
+              className="min-w-0 flex-1 rounded-lg border border-white/15 bg-[#1E1411] px-3 py-2 text-sm text-white outline-none ring-[#D7B46A] focus:ring-2"
+              value={d}
+              onChange={(e) => setBookableDateAt(index, e.target.value)}
+              disabled={disabled}
+              required={index === 0}
+            />
+            <button
+              type="button"
+              onClick={() => removeBookableDate(index)}
+              disabled={disabled || values.bookableDates.length <= 1}
+              className="shrink-0 rounded-md border border-red-500/40 px-3 py-2 text-xs text-red-200 hover:bg-red-500/10 disabled:opacity-50"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
       </div>
       <div className="md:col-span-2">
         <label className="mb-1.5 block text-sm font-medium text-white/80" htmlFor="tour-main-image">
@@ -328,10 +368,12 @@ function trimLocales(locales: TourLocales): TourLocales {
 
 export function formValuesToPayload(values: TourFormValues) {
   const pricePerPerson = Number(values.pricePerPerson);
+  const bookableDates = [...new Set(values.bookableDates.map((s) => s.trim()).filter(Boolean))].sort();
   return {
     locales: trimLocales(values.locales),
     pricePerPerson,
-    date: values.date.trim(),
+    date: bookableDates[0] ?? "",
+    bookableDates,
     mainImage: values.mainImage.trim(),
     galleryImages: values.galleryImages.map((img) => img.trim()).filter(Boolean),
   };
