@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AdminLoading } from "@/components/admin/AdminLoading";
 import { adminJson } from "@/lib/api/adminClient";
 import type { ApiOrder } from "@/types/api";
+import { tourStrings } from "@/lib/tourLocale";
 
 function formatDate(iso: string) {
   try {
@@ -88,9 +89,11 @@ export default function AdminOrdersPage() {
                     </a>
                   </td>
                   <td className="max-w-[220px] px-4 py-3">
-                    <p className="font-medium text-white">{o.tour?.name ?? `Tour #${o.tourId}`}</p>
+                    <p className="font-medium text-white">
+                      {o.tour ? tourStrings(o.tour, "en").title : `Tour #${o.tourId}`}
+                    </p>
                     <p className="text-xs text-white/45">
-                      Departs {o.tour?.date ?? "—"} · {o.tour?.duration ?? "—"}
+                      Departs {o.tour?.date ?? "—"} · {o.tour ? tourStrings(o.tour, "en").duration : "—"}
                     </p>
                     {o.tour?.imageUrl ? (
                       <p className="mt-1 truncate text-[10px] text-white/30" title={o.tour.imageUrl}>

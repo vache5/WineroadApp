@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 
 import { useToursApi } from "@/hooks/useToursApi";
 import { defaultLocale, locales } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
 import { tourDisplayName } from "@/lib/tourDisplayName";
+import { tourStrings } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 import type { ApiTour } from "@/types/api";
 
@@ -26,8 +28,8 @@ export default function ToursPage() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
-  const currentLocale = locales.includes(segments[0] as (typeof locales)[number])
-    ? segments[0]
+  const currentLocale: Locale = locales.includes(segments[0] as Locale)
+    ? (segments[0] as Locale)
     : defaultLocale;
 
   const { tours, loading, error } = useToursApi(15000);
@@ -41,11 +43,11 @@ export default function ToursPage() {
   const durationOptions = useMemo(() => {
     const set = new Set<string>();
     for (const tour of tours) {
-      const d = tour.duration?.trim();
+      const d = tourStrings(tour, currentLocale).duration.trim();
       if (d) set.add(d);
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [tours]);
+  }, [tours, currentLocale]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [duration, setDuration] = useState<string>("all");
@@ -73,11 +75,16 @@ export default function ToursPage() {
 
     const list = tours.filter((tour) => {
       if (q) {
-        const name = tour.name.toLowerCase();
-        const desc = tour.description.toLowerCase();
-        if (!name.includes(q) && !desc.includes(q)) return false;
+        const haystack = locales
+          .map((loc) => {
+            const b = tour.locales[loc];
+            return `${b.title} ${b.description}`.toLowerCase();
+          })
+          .join(" ");
+        if (!haystack.includes(q)) return false;
       }
-      if (duration !== "all" && tour.duration.trim() !== duration) return false;
+      const d = tourStrings(tour, currentLocale).duration.trim();
+      if (duration !== "all" && d !== duration) return false;
       if (tour.pricePerPerson < safeMin || tour.pricePerPerson > safeMax) return false;
       return true;
     });
@@ -91,13 +98,25 @@ export default function ToursPage() {
         next.sort((a, b) => b.pricePerPerson - a.pricePerPerson);
         break;
       case "name":
-        next.sort((a, b) => a.name.localeCompare(b.name));
+        next.sort((a, b) =>
+          tourStrings(a, currentLocale).title.localeCompare(tourStrings(b, currentLocale).title),
+        );
         break;
       default:
         break;
     }
     return next;
-  }, [tours, searchQuery, duration, sort, minPrice, maxPrice, stats.minPrice, stats.maxPrice]);
+  }, [
+    tours,
+    searchQuery,
+    duration,
+    sort,
+    minPrice,
+    maxPrice,
+    stats.minPrice,
+    stats.maxPrice,
+    currentLocale,
+  ]);
 
   const handleReset = () => {
     setSearchQuery("");
@@ -297,6 +316,7 @@ export default function ToursPage() {
             <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2">
               {filteredTours.map((tour: ApiTour) => {
                 const cardImage = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
+                const copy = tourStrings(tour, currentLocale);
                 return (
                   <Link
                     key={tour.id}
@@ -307,7 +327,7 @@ export default function ToursPage() {
                       {cardImage ? (
                         <Image
                           src={cardImage}
-                          alt={tourDisplayName(tour.name)}
+                          alt={tourDisplayName(copy.title)}
                           fill
                           sizes="(max-width: 640px) 100vw, 50vw"
                           className="object-cover"
@@ -317,13 +337,13 @@ export default function ToursPage() {
                     </div>
                     <div className="flex flex-grow flex-col p-6">
                       <h3 className="line-clamp-2 font-playfair text-xl text-white">
-                        {tourDisplayName(tour.name)}
+                        {tourDisplayName(copy.title)}
                       </h3>
                       <p className="mt-2 line-clamp-2 flex-grow text-sm leading-relaxed text-gray-400">
-                        {tour.description}
+                        {copy.description}
                       </p>
-                      {tour.duration?.trim() ? (
-                        <p className="mt-3 text-xs text-gray-500">{tour.duration}</p>
+                      {copy.duration.trim() ? (
+                        <p className="mt-3 text-xs text-gray-500">{copy.duration}</p>
                       ) : null}
                       <div className="mt-auto flex items-end justify-between gap-3 pt-4">
                         <div className="min-w-0">

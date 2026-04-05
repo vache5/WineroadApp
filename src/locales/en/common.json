@@ -152,6 +152,10 @@
     }
   },
   "tourDetail": {
+    "overviewHeading": "Overview",
+    "durationLabel": "Duration",
+    "departureDateLabel": "Departure Date",
+    "priceLabel": "Price",
     "bookThisTour": "Book This Tour",
     "reserveSubtitle": "Reserve your spot today",
     "selectDate": "Select Date",

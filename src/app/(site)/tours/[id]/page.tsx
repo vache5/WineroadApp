@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { publicJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { defaultLocale, locales } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
+import { tourStrings } from "@/lib/tourLocale";
 import { toBrowserImageSrc } from "@/lib/tourImageSrc";
 
 const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
@@ -14,8 +17,12 @@ const FORMSPREE_TOUR_ORDER_URL = "https://formspree.io/f/mvzvbwgn";
 export default function TourDetailsPage() {
   const { t } = useTranslation("common");
   const params = useParams();
+  const pathname = usePathname();
   const tourId = params?.id as string;
-  const locale = (params?.locale as string) ?? "en";
+  const segments = pathname.split("/").filter(Boolean);
+  const currentLocale: Locale = locales.includes(segments[0] as Locale)
+    ? (segments[0] as Locale)
+    : defaultLocale;
   const [tour, setTour] = useState<ApiTour | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,13 +77,14 @@ export default function TourDetailsPage() {
       <div className="min-h-screen bg-[#151313] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-xl mb-4">{error ?? "Tour not found"}</p>
-          <Link href={`/${locale}/tours`} className="text-[#D1B06B] hover:underline">
+          <Link href={`/${currentLocale}/tours`} className="text-[#D1B06B] hover:underline">
             Back to Tours
           </Link>
         </div>
       </div>
     );
   }
+  const copy = tourStrings(tour, currentLocale);
   const selectedImage = allImages[selectedImageIndex];
   const totalPrice = tour.pricePerPerson * peopleCount;
 
@@ -112,7 +120,7 @@ export default function TourDetailsPage() {
           name: userName.trim(),
           email: userEmail.trim(),
           tour_id: tour.id,
-          tour_name: tour.name,
+          tour_name: copy.title,
           preferred_date: selectedDate,
           number_of_people: peopleCount,
           price_per_person_amd: tour.pricePerPerson,
@@ -142,7 +150,7 @@ export default function TourDetailsPage() {
       <div className="bg-[#1A0F0F] text-white py-8">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <Link
-            href={`/${locale}/tours`}
+            href={`/${currentLocale}/tours`}
             className="inline-flex items-center gap-2 text-gray-400 hover:text-[#D1B06B] transition-colors mb-4"
           >
             <svg
@@ -161,7 +169,7 @@ export default function TourDetailsPage() {
             Back to Tours
           </Link>
           <h1 className="text-3xl sm:text-4xl font-playfair text-white tracking-wide">
-            {tour.name}
+            {copy.title}
           </h1>
         </div>
       </div>
@@ -175,7 +183,7 @@ export default function TourDetailsPage() {
             <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-[#2B1D1A]">
               {selectedImage ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={selectedImage} alt={tour.name} className="h-full w-full object-cover" />
+                <img src={selectedImage} alt={copy.title} className="h-full w-full object-cover" />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-white/35 text-sm">
                   No photos yet
@@ -261,7 +269,7 @@ export default function TourDetailsPage() {
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={image} alt={`${tour.name} - Image ${index + 1}`} className="h-full w-full object-cover" />
+                  <img src={image} alt={`${copy.title} - Image ${index + 1}`} className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>
@@ -269,22 +277,22 @@ export default function TourDetailsPage() {
             {/* Description Section */}
             <div className="bg-[#2B1D1A] p-6 rounded-lg space-y-6">
               <div>
-                <h2 className="text-2xl font-playfair text-white mb-4">Overview</h2>
-                <p className="text-gray-300 leading-relaxed">{tour.description}</p>
+                <h2 className="text-2xl font-playfair text-white mb-4">{t("tourDetail.overviewHeading")}</h2>
+                <p className="text-gray-300 leading-relaxed">{copy.description}</p>
               </div>
 
               {/* Tour Info */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-gray-700">
                 <div>
-                  <p className="text-sm text-gray-400 mb-1">Duration</p>
-                  <p className="text-white font-medium">{tour.duration}</p>
+                  <p className="text-sm text-gray-400 mb-1">{t("tourDetail.durationLabel")}</p>
+                  <p className="text-white font-medium">{copy.duration}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400 mb-1">Departure Date</p>
+                  <p className="text-sm text-gray-400 mb-1">{t("tourDetail.departureDateLabel")}</p>
                   <p className="text-white font-medium">{tour.date}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400 mb-1">Price</p>
+                  <p className="text-sm text-gray-400 mb-1">{t("tourDetail.priceLabel")}</p>
                   <p className="text-[#D1B06B] font-semibold">{tour.pricePerPerson.toLocaleString()}Դ</p>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AdminLoading } from "@/components/admin/AdminLoading";
 import { adminFetch, publicJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
+import { adminTourTitle } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
 
 export default function AdminToursPage() {
@@ -118,8 +119,8 @@ export default function AdminToursPage() {
                         ) : null}
                       </div>
                       <div>
-                        <p className="font-medium text-white">{t.name}</p>
-                        <p className="line-clamp-1 text-xs text-white/45">{t.duration}</p>
+                        <p className="font-medium text-white">{adminTourTitle(t)}</p>
+                        <p className="line-clamp-1 text-xs text-white/45">{t.locales.en.duration}</p>
                       </div>
                     </div>
                   </td>
@@ -136,7 +137,7 @@ export default function AdminToursPage() {
                       <button
                         type="button"
                         disabled={deletingId === t.id}
-                        onClick={() => void handleDelete(t.id, t.name)}
+                        onClick={() => void handleDelete(t.id, adminTourTitle(t))}
                         className="rounded-md border border-red-500/40 px-2 py-1 text-xs text-red-200 hover:bg-red-500/10 disabled:opacity-50"
                       >
                         {deletingId === t.id ? "…" : "Delete"}
