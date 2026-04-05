@@ -52,6 +52,9 @@ export default function EditTourPage() {
       if (!Number.isFinite(payload.pricePerPerson) || payload.pricePerPerson <= 0) {
         throw new Error("Price per person must be a positive number");
       }
+      if (!payload.bookableDates.length) {
+        throw new Error("Add at least one bookable date");
+      }
       await adminJson<ApiTour>(`/tours/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
@@ -88,7 +91,7 @@ export default function EditTourPage() {
       </div>
       <div>
         <h1 className="text-2xl font-semibold text-white">Edit tour</h1>
-        <p className="mt-1 text-sm text-white/50">Update price, date, main image, gallery, and copy</p>
+        <p className="mt-1 text-sm text-white/50">Update price, bookable dates, main image, gallery, and copy</p>
       </div>
 
       {error ? (

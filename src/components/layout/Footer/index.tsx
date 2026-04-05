@@ -137,7 +137,7 @@ export default function Footer() {
               {/* Social Media Icons */}
               <div className="flex gap-3">
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/wineroad.am?igsh=MTI5aDB5aHUwYzdzbg=="
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-lg bg-[#2B1D1A] hover:bg-[#3a2a27] flex items-center justify-center transition-colors group"

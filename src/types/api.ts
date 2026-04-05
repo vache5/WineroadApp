@@ -16,7 +16,10 @@ export type ApiTour = {
   /** Title, description, and duration in English, Russian, and Armenian. */
   locales: TourLocales;
   pricePerPerson: number;
+  /** Earliest bookable day (legacy + convenience). */
   date: string;
+  /** Days when booking is allowed (YYYY-MM-DD), set in admin. */
+  bookableDates: string[];
   mainImage: string;
   galleryImages: string[];
   imageUrl?: string;
