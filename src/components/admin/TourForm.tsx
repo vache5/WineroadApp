@@ -24,6 +24,7 @@ export type TourFormValues = {
   pricePerPerson: string;
   /** YYYY-MM-DD; at least one required on save. */
   bookableDates: string[];
+  isHidden: boolean;
   mainImage: string;
   galleryImages: string[];
 };
@@ -38,6 +39,7 @@ export function tourToFormValues(tour: ApiTour): TourFormValues {
     },
     pricePerPerson: String(tour.pricePerPerson),
     bookableDates: fromApi.length ? fromApi : [""],
+    isHidden: tour.isHidden,
     mainImage: tour.mainImage ?? tour.imageUrl ?? "",
     galleryImages: tour.galleryImages ?? [],
   };
@@ -47,6 +49,7 @@ export const emptyTourForm: TourFormValues = {
   locales: emptyLocales(),
   pricePerPerson: "",
   bookableDates: [""],
+  isHidden: false,
   mainImage: "",
   galleryImages: [""],
 };
@@ -228,6 +231,21 @@ export function TourForm({ values, onChange, disabled }: TourFormProps) {
           required
         />
       </div>
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-white/80" htmlFor="tour-visibility">
+          Visibility
+        </label>
+        <select
+          id="tour-visibility"
+          className="w-full rounded-lg border border-white/15 bg-[#1E1411] px-3 py-2 text-sm text-white outline-none ring-[#D7B46A] focus:ring-2"
+          value={values.isHidden ? "hidden" : "visible"}
+          onChange={(e) => patch("isHidden", e.target.value === "hidden")}
+          disabled={disabled}
+        >
+          <option value="visible">Visible on website</option>
+          <option value="hidden">Hidden from website</option>
+        </select>
+      </div>
       <div className="md:col-span-2 space-y-2">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium text-white/80">Bookable dates</label>
@@ -374,6 +392,7 @@ export function formValuesToPayload(values: TourFormValues) {
     pricePerPerson,
     date: bookableDates[0] ?? "",
     bookableDates,
+    isHidden: values.isHidden,
     mainImage: values.mainImage.trim(),
     galleryImages: values.galleryImages.map((img) => img.trim()).filter(Boolean),
   };

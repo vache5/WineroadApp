@@ -45,7 +45,7 @@ export default function AdminDashboardPage() {
     { label: "Tours", value: stats?.tourCount ?? 0, href: "/admin/tours" },
     { label: "Orders", value: stats?.orderCount ?? 0, href: "/admin/orders" },
     {
-      label: "Revenue (total)",
+      label: "Revenue (confirmed)",
       value: stats?.revenueTotal != null ? stats.revenueTotal.toLocaleString() : "—",
       href: "/admin/orders",
     },

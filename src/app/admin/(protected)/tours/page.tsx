@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { AdminLoading } from "@/components/admin/AdminLoading";
-import { adminFetch, publicJson } from "@/lib/api/adminClient";
+import { adminFetch, adminJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
 import { adminTourTitle } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
@@ -19,7 +19,7 @@ export default function AdminToursPage() {
   const load = useCallback(async () => {
     setError(null);
     try {
-      const data = await publicJson<ApiTour[]>("/tours");
+      const data = await adminJson<ApiTour[]>("/tours?includeHidden=1");
       setTours(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load tours");
@@ -89,13 +89,14 @@ export default function AdminToursPage() {
               <th className="px-4 py-3 font-medium">Tour</th>
               <th className="px-4 py-3 font-medium">Bookable dates</th>
               <th className="px-4 py-3 font-medium">Price</th>
+              <th className="px-4 py-3 font-medium">Status</th>
               <th className="px-4 py-3 font-medium text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10 bg-[#1A1310]">
             {tours.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-white/50">
+                <td colSpan={5} className="px-4 py-8 text-center text-white/50">
                   No tours yet.{" "}
                   <Link href="/admin/tours/new" className="text-[#D7B46A] underline-offset-2 hover:underline">
                     Create one
@@ -129,6 +130,17 @@ export default function AdminToursPage() {
                     {resolvedBookableDates(t).join(", ") || "—"}
                   </td>
                   <td className="px-4 py-3 text-[#D7B46A]">{t.pricePerPerson.toLocaleString()}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`rounded-full px-2 py-1 text-xs ${
+                        t.isHidden
+                          ? "border border-amber-500/40 bg-amber-500/10 text-amber-200"
+                          : "border border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
+                      }`}
+                    >
+                      {t.isHidden ? "Hidden" : "Visible"}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">
                       <Link

@@ -11,7 +11,7 @@ import {
   tourToFormValues,
   type TourFormValues,
 } from "@/components/admin/TourForm";
-import { adminJson, publicJson } from "@/lib/api/adminClient";
+import { adminJson } from "@/lib/api/adminClient";
 import type { ApiTour } from "@/types/api";
 
 export default function EditTourPage() {
@@ -28,7 +28,7 @@ export default function EditTourPage() {
     setError(null);
     setLoading(true);
     try {
-      const tour = await publicJson<ApiTour>(`/tours/${id}`);
+      const tour = await adminJson<ApiTour>(`/tours/${id}?includeHidden=1`);
       setValues(tourToFormValues(tour));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Tour not found");

@@ -20,6 +20,8 @@ export type ApiTour = {
   date: string;
   /** Days when booking is allowed (YYYY-MM-DD), set in admin. */
   bookableDates: string[];
+  /** Hidden tours stay in admin but are excluded from public pages. */
+  isHidden: boolean;
   mainImage: string;
   galleryImages: string[];
   imageUrl?: string;
@@ -34,7 +36,9 @@ export type ApiOrder = {
   userEmail: string;
   numberOfPeople: number;
   totalPrice: number;
+  status: "pending" | "confirmed" | "cancelled";
   createdAt: string;
+  updatedAt: string;
   tour: ApiTour;
 };
 
