@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useGalleryApi } from "@/hooks/useGalleryApi";
 import { defaultLocale, locales } from "@/i18n/config";
 import { nonEmptyImageUrl, toBrowserImageSrc } from "@/lib/tourImageSrc";
+import { GaleryLoaderAnimation } from "@/components/ui/GaleryLoaderAnimation";
 
 const PREVIEW_COUNT = 6;
 
@@ -135,6 +136,9 @@ export default function FeaturedTours() {
                 <p className="text-[#D8D3CC]/80 text-sm text-center py-6 px-4">
                   {t("homepage.galleryPreviewEmpty")}
                 </p>
+              ) : null}
+              {loading && previewItems.length === 0 ? (
+                <GaleryLoaderAnimation />
               ) : null}
 
               {previewItems.length > 0 ? (

@@ -8,6 +8,7 @@ import { defaultLocale, locales } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { tourStrings } from "@/lib/tourLocale";
 import { resolveTourImageSrc } from "@/lib/tourImageSrc";
+import { GaleryLoaderAnimation } from "@/components/ui/GaleryLoaderAnimation";
 
 export default function OurToursSection() {
   const { t } = useTranslation("common");
@@ -36,6 +37,9 @@ export default function OurToursSection() {
         <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
           {loading && featuredTours.length === 0 ? (
             <p className="text-white/70">{t("ourTours.loading")}</p>
+          ) : null}
+          {loading && featuredTours.length === 0 ? (
+            <GaleryLoaderAnimation />
           ) : null}
           {featuredTours.map((tour) => {
             const cardSrc = resolveTourImageSrc(tour.mainImage, tour.imageUrl);
