@@ -5,8 +5,8 @@ export type NavItem = {
 
 export const useNavItems = (): NavItem[] => [
   { key: "home", href: "/" },
-  { key: "about", href: "/about" },
   { key: "tours", href: "/tours" },
   { key: "gallery", href: "/gallery" },
   { key: "contact", href: "/contact" },
+  { key: "about", href: "/about" },
 ];

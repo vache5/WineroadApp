@@ -33,9 +33,9 @@ export default function LanguageSwitcher() {
         className="rounded border border-[#D4A755] bg-[#1A0F0F] px-2 py-1 text-xs text-[#D4A755] focus:outline-none md:text-sm"
         aria-label="Language switcher"
       >
-        <option value="en">English</option>
-        <option value="ru">Русский</option>
-        <option value="am">Հայերեն</option>
+        <option value="en">🇬🇧 ENG</option>
+        <option value="am">🇦🇲 ARM</option>
+        <option value="ru">🇷🇺 RUS</option>
       </select>
     </label>
   );

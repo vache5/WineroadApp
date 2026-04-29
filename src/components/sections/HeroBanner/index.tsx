@@ -24,10 +24,12 @@ export function HeroBanner() {
         {/* Centered Content */}
         <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center text-white md:max-w-5xl md:px-8">
           <div className="space-y-6">
-            <h1 className="font-playfair text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl" style={{ fontWeight: 900 }}>
-              {t("hero.titleLine1")}
-              <br />
-              {t("hero.titleLine2")}
+            <h1
+              className="flex flex-col items-center font-playfair text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl"
+              style={{ fontWeight: 900 }}
+            >
+              <span className="inline-block whitespace-nowrap text-center">{t("hero.titleLine1")}</span>
+              <span className="block">{t("hero.titleLine2")}</span>
             </h1>
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/90 md:text-lg lg:text-xl">
               {t("hero.subtitle")}

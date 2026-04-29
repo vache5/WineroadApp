@@ -31,21 +31,21 @@ const Header = () => {
       className="sticky top-0 z-50 border-b border-[#D4A755]/25 bg-[#1A0F0F]/95 text-white shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md supports-[backdrop-filter]:bg-[#1A0F0F]/88"
       suppressHydrationWarning
     >
-      <div className="mx-auto flex h-[80px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[76px] md:px-8">
+      <div className="mx-auto flex h-[88px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 md:h-[92px] md:px-8">
         {/* Brand — logo fills bar height; header stays compact */}
         <Link
           href={withLocale("/")}
-          className="group relative flex h-[120px] w-[120px] shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F] md:h-[80px] md:w-[80px]"
+          className="group relative flex h-[132px] w-[132px] shrink-0 items-center justify-center rounded-2xl outline-none ring-[#D4A755]/0 transition-[box-shadow,ring-color] focus-visible:ring-2 focus-visible:ring-[#D4A755]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A0F0F] md:h-[112px] md:w-[112px]"
           aria-label={`Wine Road — ${t("navbar.home")}`}
         >
           <Image
             src="/images/logo-Photoroom.png"
             alt=""
-            width={200}
-            height={200}
+            width={260}
+            height={260}
             className="h-full w-full object-contain object-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out group-hover:scale-[1.03]"
             priority
-            sizes="(max-width: 768px) 120px, 80px"
+            sizes="(max-width: 768px) 132px, 112px"
           />
         </Link>
 
@@ -57,7 +57,7 @@ const Header = () => {
                 <Link
                   key={item.key}
                   href={withLocale(item.href)}
-                  className="font-playfair text-sm font-medium text-white/70 transition-colors hover:text-[#D4A755] lg:text-base"
+                  className="font-playfair text-base font-semibold tracking-[0.01em] text-white/85 transition-colors duration-200 hover:text-[#E2B768] lg:text-[1.1rem]"
                 >
                   {t(`navbar.${item.key}`)}
                 </Link>
@@ -121,7 +121,7 @@ const Header = () => {
                     key={item.key}
                     href={withLocale(item.href)}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="font-playfair text-base font-medium text-white/70 transition-colors hover:text-[#D4A755]"
+                    className="font-playfair text-lg font-semibold tracking-[0.01em] text-white/85 transition-colors duration-200 hover:text-[#E2B768]"
                   >
                     {t(`navbar.${item.key}`)}
                   </Link>
